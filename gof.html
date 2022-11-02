@@ -17,18 +17,18 @@ style="border:1px solid #c3c3c3; margin:3px;"></canvas>
 	var c = document.getElementById("myCanvas");
 	var ctx = c.getContext("2d");
 	let a, b, c, d;
-	var arr = new Array(50);
-	arr.forEach(x => { x = new Array(50); x.forEach(y => { y = 0; }) });
+	var gamefield = new Array(50);
+	gamefield.forEach(x => { x = new Array(50); x.forEach(y => { y = 0; }) });
 
-	for (let x = 0; x < arr.length; x++) 
+	for (let x = 0; x < gamefield.length; x++) 
 	{
-		for (let y = 0; y < arr.length; y++) 
+		for (let y = 0; y < gamefield.length; y++) 
 		{ 
 			a = x * 5;
 			b = y * 5; 
 			c = x * 5 - 1;
 			d = y * 5 - 1;
-			if (arr[x][y] == 1)
+			if (gamefield[x][y] == 1)
 			{
 				ctx.fillRect(a, b, c, d);
 			}
