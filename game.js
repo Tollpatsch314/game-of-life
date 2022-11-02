@@ -68,15 +68,17 @@ function pauseGame() {
 // Gibt die Anzahl der umgebenden Feldern, welche leben zurück
 function getEnvrmCount(field, x, y) {
     let l = (x == 0 ? field_size[0] - 1 : -1), // left
-    t = (y == 0 ? field_size[1] - 1 : -1), // top
-    r = (x == field_size[0] - 1 ? 0 : 1), // right
-    b = (y == field_size[1] - 1 ? 0 : 1); // bottom
+    	t = (y == 0 ? field_size[1] - 1 : -1), // top
+    	r = (x == field_size[0] - 1 ? -x : 1), // right
+    	b = (y == field_size[1] - 1 ? -y : 1); // bottom
+
     function fld(xAdd, yAdd) {
-        return field[x + xAdd][y + yAdd].alive ? 1 : 0;
+        return (field[x + xAdd][y + yAdd].alive ? 1 : 0);
     }
+
     return (fld(l, t) + fld(0, t) + fld(r, t) +
-        fld(l, 0) + fld(r, 0) +
-        fld(l, b) + fld(0, t) + fld(r, b));
+        fld(l, 0) +                fld(r, 0) +
+        fld(l, b) + fld(0, b) + fld(r, b));
 }
 function convertField(field) {
     field.forEach((xVal, x, xArr) => {
@@ -84,6 +86,7 @@ function convertField(field) {
             yVal.sourElmCount = getEnvrmCount(field, x, y);
         });
     });
+	return field;
 }
 function drawField(field) {
     let xCan, yCan, width;
@@ -108,17 +111,17 @@ function drawField(field) {
 }
 function iterGame(drawField) {
     let new_field = genGField();
+	game_field = convertField(game_field);
 
     for (let x = 0; x < game_field.length; x++) {
-        for (let y = 0; y < game_field.length; y++) {
+        for (let y = 0; y < game_field[x].length; y++) {
             if (game_field[x][y].sourElmCount == 3 || // Tod und Drei Nachbarn, bzw. drei Nachbarn (gleiches Ergebnis)
                 (game_field[x][y].sourElmCount == 2 && game_field[x][y].alive)) // Lebendig und zwei lebendige Nachbarn
              {
-                new_field[x][y].alive = true; // Erstes Bit => Zelle lebt
+                new_field[x][y].alive = true;
             }
         }
     }
-    convertField(new_field);
     game_field = new_field;
 	drawField(new_field);
 	console.log("134");
