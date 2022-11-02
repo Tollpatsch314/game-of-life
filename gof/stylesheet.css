@@ -1,0 +1,42 @@
+#myCanvas 
+{
+    border:1px solid #111bd17e;
+    margin:3px;
+}
+#startbutton
+{
+    background-color: rgb(11, 156, 108);
+
+}
+body
+{
+    background-color: blue;
+
+}
+h2
+{
+    color: rgb(167, 167, 162);
+}
+#manuellbutton
+{
+    background-color: #d60f91a4;
+}
+#hochladen
+{
+  
+    
+}
+#textfeld
+{
+    background-color: aquamarine;
+}
+.btn-styled {
+    font-size: 14px;
+    margin: 8px;
+    padding: 0 10px;
+    line-height: 2;
+}
+#btn3
+{
+    color: blue;
+}
