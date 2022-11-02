@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="stylesheet.css">
+<script src="game.js"></script>
+</head>
+<body>
+	<h1>Conways Game of Life</h1>
+
+	<div class="gridcon">
+		<div class="Menu">
+			<br>
+			<br>
+			<input id="startbutton" class="btn-start" type="button" onclick="startGame()" value="Start" />
+			<br>
+			<br>
+			<input id="pausebutton" class="btn-stopp" type="button" onclick="pauseGame()" value="Stopp"/>
+			<br>
+			<br>
+			<input id="rngbth" class="btn-rng" type="button" onclick="rand(17)" value="Rng"/>
+			<br>
+			<br>
+			<input class="btn-styled" type="button" onclick="location.href='Help.html';" value="Hilfe" />
+			<br>
+			<br>
+			<!--<input id="hochladen" type="file" name="upload" placeholder="eigene datei">-->
+		</div>
+	
+	<canvas id="myCanvas"></canvas>
+	</div>
+	
+
+
+
+<script>
+loadPage();
+</script>
+
+
+
+</body>
+</html>

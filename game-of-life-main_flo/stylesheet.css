@@ -1,0 +1,127 @@
+#myCanvas {
+    border: 1px solid #040a707e;
+    margin: 5px;
+}
+
+
+
+body {
+    background-color: blue;
+}
+
+h1 {
+    color: rgb(167, 167, 162);
+    text-align: center;
+}
+
+
+
+
+#rngbtn {
+    background-color: aquamarine;
+    
+}
+
+.btn-styled {
+    font-size: 14px;
+    margin: 8px;
+    padding: 0 10px;
+    line-height: 2;
+}
+
+#btn3 {
+    color: blue;
+}
+#helptitle {
+    text-align: center;
+    color: rgb(167, 167, 162);
+}
+.gridcon {
+    display: grid;
+    grid-template-columns: auto auto;
+
+}
+.Menu {
+    text-align: center;
+}
+#helpinfobox {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+.helpinfo {
+    grid-column-start: 1;
+    margin-left: 5%;
+}
+.helpimg {
+    grid-column-start: 2;
+
+}
+.btn-start {
+    display: inline-block;
+    padding: 15px 25px;
+    font-size: 24px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #af4c4c;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+  }
+  
+.btn-start:hover {background-color: #a22739}
+
+.btn-start:active {
+    background-color: #8e4d3e;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
+
+
+.btn-stopp {
+    display: inline-block;
+    padding: 15px 25px;
+    font-size: 24px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+  }
+  
+.btn-stopp:hover {background-color: #29ac2d}
+
+.btn-stopp:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
+
+.btn-rng {
+    display: inline-block;
+    padding: 15px 25px;
+    font-size: 24px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #9eb63d;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+  }
+  
+.btn-rng:hover {background-color: #8eca1f}
+
+.btn-rng:active {
+    background-color: #9aa523;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
