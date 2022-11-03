@@ -17,31 +17,38 @@ var mousedown, mouseIsSetting;
 function loadPage() {
     canvas = document.getElementById("game-field");
     ctx = canvas.getContext("2d");
-    ctx.canvas.width = window.innerHeight / 10 * 9;
-    ctx.canvas.height = window.innerHeight / 10 * 9;
+    function calcCtxSize() {
+        ctx.canvas.width = window.innerHeight / 10 * 9;
+        ctx.canvas.height = window.innerHeight / 10 * 9;
+    }
+    calcCtxSize();
     // Default Werte
     GFieldData.cols = 50;
     GFieldData.rows = 50;
     GFieldData.genField();
     drawField(GFieldData.field);
+    function drawEvent(evt) {
+        var pos = getFieldPos(getMousePos(canvas, evt));
+        GFieldData.field[pos.x][pos.y] = mouseIsSetting ? 1 : 0;
+        drawField(GFieldData.field);
+    }
     canvas.addEventListener("mousedown", function (evt) {
         mousedown = true;
         var pos = getFieldPos(getMousePos(canvas, evt));
         mouseIsSetting = GFieldData.field[pos.x][pos.y] != 0 ? false : true;
     });
     canvas.addEventListener("mouseup", function (evt) {
+        drawEvent(evt);
         mousedown = false;
     });
     canvas.addEventListener("mousemove", function (evt) {
         if (!mousedown)
             return;
-        var pos = getFieldPos(getMousePos(canvas, evt));
-        GFieldData.field[pos.x][pos.y] = mouseIsSetting ? true : false;
-        drawField(GFieldData.field);
+        drawEvent(evt);
     });
-    canvas.addEventListener("click", function (evt) {
-        var pos = getFieldPos(getMousePos(canvas, evt));
-        GFieldData.field[pos.x][pos.y] = GFieldData.field[pos.x][pos.y] != 0 ? 0 : 1;
+    canvas.addEventListener("click", drawEvent);
+    window.addEventListener("resize", function (evt) {
+        calcCtxSize();
         drawField(GFieldData.field);
     });
 }
@@ -78,7 +85,7 @@ function drawField(field) {
                 ctx.fillRect(xCan, yCan, width, width);
             }
             else {
-                ctx.fillStyle = "rgb(245, 245, 245)";
+                ctx.fillStyle = "rgb(245, 245, 245)"; // <== keine schönere Lösung gefunden (die funktioniert)
                 ctx.fillRect(xCan, yCan, width, width);
                 ctx.fillStyle = "rgb(0, 0, 0)";
                 ctx.strokeRect(xCan, yCan, width, width);
@@ -87,9 +94,9 @@ function drawField(field) {
     }
 }
 function f_pentomino() {
-    game_field[25][25] = 1;
-    game_field[25][26] = 1;
-    game_field[25][27] = 1;
-    game_field[26][25] = 1;
-    game_field[24][26] = 1;
+    GFieldData.field[25][25] = 1;
+    GFieldData.field[25][26] = 1;
+    GFieldData.field[25][27] = 1;
+    GFieldData.field[26][25] = 1;
+    GFieldData.field[24][26] = 1;
 }

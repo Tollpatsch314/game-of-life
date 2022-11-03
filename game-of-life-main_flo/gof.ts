@@ -13,33 +13,33 @@ class GFieldData {
 }
 
 class GameStates {
-    private static timerID: number;
-    private static tickInterval: number;
-    private static isRunning: boolean;
-	private static drawFunction: Function;
+    private static _timerID: number;
+    private static _tickInterval: number;
+    private static _isRunning: boolean;
+	private static _drawFunction: Function;
 
     public static changeInterval(interval: number): void {
-        GameStates.tickInterval = interval;
+        GameStates._tickInterval = interval;
 
-        if(GameStates.isRunning) {
-            window.clearInterval(GameStates.timerID);
-			GameStates.timerID = window.setInterval(gameIteration, GameStates.tickInterval, GameStates.drawFunction);
+        if(GameStates._isRunning) {
+            window.clearInterval(GameStates._timerID);
+			GameStates._timerID = window.setInterval(gameIteration, GameStates._tickInterval, GameStates._drawFunction);
         }
     }
 
     public static startGame(drawGameField: Function): void {
-		GameStates.drawFunction = drawGameField;
-        GameStates.timerID = window.setInterval(gameIteration, GameStates.tickInterval, drawGameField);
-        GameStates.isRunning = true;
+		GameStates._drawFunction = drawGameField;
+        GameStates._timerID = window.setInterval(gameIteration, GameStates._tickInterval, drawGameField);
+        GameStates._isRunning = true;
     }
 
     public static pauseGame(): void {
-        window.clearInterval(GameStates.timerID);
-        GameStates.isRunning = false;
+        window.clearInterval(GameStates._timerID);
+        GameStates._isRunning = false;
     }
 
 	public static isRunning(): boolean {
-		return GameStates.isRunning;
+		return GameStates._isRunning;
 	}
 }
 

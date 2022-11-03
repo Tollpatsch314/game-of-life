@@ -11,23 +11,23 @@ var GameStates = /** @class */ (function () {
     function GameStates() {
     }
     GameStates.changeInterval = function (interval) {
-        GameStates.tickInterval = interval;
-        if (GameStates.isRunning) {
-            window.clearInterval(GameStates.timerID);
-            GameStates.timerID = window.setInterval(gameIteration, GameStates.tickInterval, GameStates.drawFunction);
+        GameStates._tickInterval = interval;
+        if (GameStates._isRunning) {
+            window.clearInterval(GameStates._timerID);
+            GameStates._timerID = window.setInterval(gameIteration, GameStates._tickInterval, GameStates._drawFunction);
         }
     };
     GameStates.startGame = function (drawGameField) {
-        GameStates.drawFunction = drawGameField;
-        GameStates.timerID = window.setInterval(gameIteration, GameStates.tickInterval, drawGameField);
-        GameStates.isRunning = true;
+        GameStates._drawFunction = drawGameField;
+        GameStates._timerID = window.setInterval(gameIteration, GameStates._tickInterval, drawGameField);
+        GameStates._isRunning = true;
     };
     GameStates.pauseGame = function () {
-        window.clearInterval(GameStates.timerID);
-        GameStates.isRunning = false;
+        window.clearInterval(GameStates._timerID);
+        GameStates._isRunning = false;
     };
     GameStates.isRunning = function () {
-        return GameStates.isRunning;
+        return GameStates._isRunning;
     };
     return GameStates;
 }());

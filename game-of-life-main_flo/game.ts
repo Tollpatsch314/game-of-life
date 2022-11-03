@@ -1,5 +1,5 @@
 var ctx: any;
-var canvas: CanvasRenderingContext2D;
+var canvas: HTMLCanvasElement;
 
 function getMousePos(canvas, evt) {
 	var rect = canvas.getBoundingClientRect();
@@ -9,7 +9,7 @@ function getMousePos(canvas, evt) {
 	};
 }
 
-function getFieldPos(mousePos: {x: number, y: number}) {
+function getFieldPos(mousePos: {x: number, y: number}): object {
 	return {
 		x: Math.floor(mousePos.x / (ctx.canvas.height / GFieldData.cols)),
 		y: Math.floor(mousePos.y / (ctx.canvas.height / GFieldData.rows))
@@ -18,10 +18,15 @@ function getFieldPos(mousePos: {x: number, y: number}) {
 
 var mousedown: boolean, mouseIsSetting: boolean;
 function loadPage() {	// Funktion lädt die Seite und den Canvas, sowie wichtige Variablen
-	canvas = document.getElementById("game-field");
+	canvas = document.getElementById("game-field") as HTMLCanvasElement;
 	ctx = canvas.getContext("2d");
-	ctx.canvas.width = window.innerHeight / 10 * 9;
-	ctx.canvas.height = window.innerHeight / 10 * 9;
+
+	function calcCtxSize() {
+		ctx.canvas.width = window.innerHeight / 10 * 9;
+		ctx.canvas.height = window.innerHeight / 10 * 9;
+	}
+
+	calcCtxSize();
 
 	// Default Werte
 	GFieldData.cols = 50;
@@ -29,6 +34,12 @@ function loadPage() {	// Funktion lädt die Seite und den Canvas, sowie wichtige
 	GFieldData.genField();
 	drawField(GFieldData.field);
 	
+	function drawEvent(evt: MouseEvent): void {
+		var pos = getFieldPos(getMousePos(canvas, evt));
+		GFieldData.field[pos.x][pos.y] = mouseIsSetting ? 1 : 0;
+		drawField(GFieldData.field);
+	}
+
 	canvas.addEventListener("mousedown", function (evt) {
 		mousedown = true;
 		var pos = getFieldPos(getMousePos(canvas, evt));
@@ -36,28 +47,26 @@ function loadPage() {	// Funktion lädt die Seite und den Canvas, sowie wichtige
 	});
 
 	canvas.addEventListener("mouseup", function (evt) {
+		drawEvent(evt);
 		mousedown = false;
 	});
 
 	canvas.addEventListener("mousemove", function(evt) {
 		if(!mousedown) return;
-		var pos = getFieldPos(getMousePos(canvas, evt));
-
-		GFieldData.field[pos.x][pos.y] = mouseIsSetting ? true : false;
-		drawField(GFieldData.field);
+		drawEvent(evt);
 	});
 
-	canvas.addEventListener("click", function(evt) {
-		var pos = getFieldPos(getMousePos(canvas, evt));
+	canvas.addEventListener("click", drawEvent);
 
-		GFieldData.field[pos.x][pos.y] = GFieldData.field[pos.x][pos.y] != 0 ? 0 : 1;
+	window.addEventListener("resize", function(evt) {
+		calcCtxSize();
 		drawField(GFieldData.field);
 	});
 }
 
 function startGame(): void {
 	GameStates.startGame(drawField);
-	let btn = document.getElementById("btnStartPause");
+	let btn = document.getElementById("btnStartPause") as HTMLButtonElement;
     if(btn !== null) {
 		btn.classList.replace("btn-start", "btn-pause");
     	btn.onclick = pauseGame;
@@ -67,7 +76,7 @@ function startGame(): void {
 
 function pauseGame(): void {
 	GameStates.pauseGame();
-	let btn = document.getElementById("btnStartPause");
+	let btn = document.getElementById("btnStartPause") as HTMLButtonElement;
 	if(btn !== null) {
 		btn.classList.replace("btn-pause", "btn-start");
 		btn.onclick = startGame;
@@ -92,7 +101,7 @@ function drawField(field: GField): void {
 				ctx.fillRect(xCan, yCan, width, width);
 			}
 			else {
-				ctx.fillStyle = "rgb(245, 245, 245)";
+				ctx.fillStyle = "rgb(245, 245, 245)";		// <== keine schönere Lösung gefunden (die funktioniert)
 				ctx.fillRect(xCan, yCan, width, width)
 				ctx.fillStyle = "rgb(0, 0, 0)";
 				ctx.strokeRect(xCan, yCan, width, width);
@@ -102,9 +111,9 @@ function drawField(field: GField): void {
 }
 
 function f_pentomino() {
-    game_field[25][25] = 1;
-    game_field[25][26] = 1;
-    game_field[25][27] = 1;
-    game_field[26][25] = 1;
-    game_field[24][26] = 1;
+    GFieldData.field[25][25] = 1;
+    GFieldData.field[25][26] = 1;
+    GFieldData.field[25][27] = 1;
+    GFieldData.field[26][25] = 1;
+    GFieldData.field[24][26] = 1;
 }

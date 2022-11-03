@@ -1,3 +1,14 @@
+html, body, .container {
+	height: 100%;
+	margin: 0;
+	background-color: #f9f9f9;
+}
+
+h1 {
+    color: rgb(167, 167, 162);
+    text-align: center;
+}
+
 .container {
 	display: grid;
 	grid-template-columns: 0.015fr 1.6fr 0.5fr;
@@ -12,6 +23,9 @@
   
 .game-stage {
 	grid-area: game-stage;
+  display: grid;
+  justify-content: center;
+  align-items: center;
 }
   
 .config-menue {
@@ -25,18 +39,10 @@
 .footer {
 	grid-area: footer;
 }
-  
-html, body, .container {
-	height: 100%;
-	margin: 0;
-	background-color: #f9f9f9;
-}
 
-h1 {
-    color: rgb(167, 167, 162);
-    text-align: center;
+#game-field {
+  display: grid;
 }
-
 
 #helptitle {
     text-align: center;
