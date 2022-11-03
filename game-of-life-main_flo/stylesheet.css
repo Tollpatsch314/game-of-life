@@ -1,12 +1,35 @@
-#myCanvas {
-    border: 1px solid #040a707e;
-    margin: 5px;
+.container {
+	display: grid;
+	grid-template-columns: 0.015fr 1.6fr 0.5fr;
+	grid-template-rows: 0.3fr 2.6fr 0.1fr;
+	gap: 0em 0em;
+	grid-auto-flow: column dense;
+	grid-template-areas:
+	  "header header header"
+	  "left-space game-stage config-menue"
+	  "footer footer footer";
 }
-
-
-
-body {
-    background-color: blue;
+  
+.game-stage {
+	grid-area: game-stage;
+}
+  
+.config-menue {
+	grid-area: config-menue;
+}
+  
+.header {
+	grid-area: header;
+}
+  
+.footer {
+	grid-area: footer;
+}
+  
+html, body, .container {
+	height: 100%;
+	margin: 0;
+	background-color: #f9f9f9;
 }
 
 h1 {
@@ -15,48 +38,51 @@ h1 {
 }
 
 
-
-
-#rngbtn {
-    background-color: aquamarine;
-    
-}
-
-.btn-styled {
-    font-size: 14px;
-    margin: 8px;
-    padding: 0 10px;
-    line-height: 2;
-}
-
-#btn3 {
-    color: blue;
-}
 #helptitle {
     text-align: center;
     color: rgb(167, 167, 162);
 }
-.gridcon {
-    display: grid;
-    grid-template-columns: auto auto;
 
-}
-.Menu {
-    text-align: center;
-}
+
 #helpinfobox {
     display: grid;
     grid-template-columns: auto auto;
 }
+
 .helpinfo {
     grid-column-start: 1;
     margin-left: 5%;
 }
+
 .helpimg {
     grid-column-start: 2;
-
 }
-.btn-start {
+
+.button {
+	box-shadow:inset 0px 7px 0px -9px #ffffff;
+	background-color:#f9f9f9;
+	border-radius:13px;
+	border:2px solid #dcdcdc;
+	display:inline-block;
+	cursor:pointer;
+	color:#666666;
+	font-family:Courier New;
+	font-size:16px;
+	font-weight:bold;
+	padding:7px 19px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #ffffff;
+}
+.button:hover {
+	background-color:#e9e9e9;
+}
+.button:active {
+	position:relative;
+	top:1px;
+}
+
+
+.btn-pause {
     display: inline-block;
     padding: 15px 25px;
     font-size: 24px;
@@ -71,16 +97,16 @@ h1 {
     box-shadow: 0 9px #999;
   }
   
-.btn-start:hover {background-color: #a22739}
+.btn-pause:hover {background-color: #a22739}
 
-.btn-start:active {
+.btn-pause:active {
     background-color: #8e4d3e;
     box-shadow: 0 5px #666;
     transform: translateY(4px);
   }
 
 
-.btn-stopp {
+.btn-start {
     display: inline-block;
     padding: 15px 25px;
     font-size: 24px;
@@ -95,9 +121,9 @@ h1 {
     box-shadow: 0 9px #999;
   }
   
-.btn-stopp:hover {background-color: #29ac2d}
+.btn-start:hover {background-color: #29ac2d}
 
-.btn-stopp:active {
+.btn-start:active {
     background-color: #3e8e41;
     box-shadow: 0 5px #666;
     transform: translateY(4px);

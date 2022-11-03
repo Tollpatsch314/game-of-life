@@ -1,43 +1,39 @@
 <!DOCTYPE HTML>
 <html>
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="stylesheet.css">
-<script src="game.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="stylesheet.css">
+	<script src="gof.js"></script>
+	<script src="game.js"></script>
 </head>
+
 <body>
-	<h1>Conways Game of Life</h1>
+	<div class="container">
 
-	<div class="gridcon">
-		<div class="Menu">
-			<br>
-			<br>
-			<input id="startbutton" class="btn-start" type="button" onclick="startGame()" value="Start" />
-			<br>
-			<br>
-			<input id="pausebutton" class="btn-stopp" type="button" onclick="pauseGame()" value="Stopp"/>
-			<br>
-			<br>
-			<input id="rngbth" class="btn-rng" type="button" onclick="rand(17)" value="Rng"/>
-			<br>
-			<br>
-			<input class="btn-styled" type="button" onclick="location.href='Help.html';" value="Hilfe" />
-			<br>
-			<br>
-			<!--<input id="hochladen" type="file" name="upload" placeholder="eigene datei">-->
+		<div class="header">
+			<h1>Conways Game of Life</h1>
 		</div>
-	
-	<canvas id="myCanvas"></canvas>
+
+		<div class="config-menue">
+			<input id="btnStartPause" class="button btn-start" type="button" onclick="startGame()" value="Start" />
+			<br /><br />
+			<input id="rngbth" class="button btn-rng" type="button" onclick="rand(17)" value="Rng"/>
+			<br /><br /><br />
+			<input class="button" type="button" onclick="location.href='Help.html';" value="Hilfe" />
+			<br /><br />
+			<input class="button" type="button" onclick="clearField();" value="Feld leeren" />
+		</div>
+
+		<div class="game-stage">
+			<canvas id="game-field"></canvas>
+		</div>
+
+		<div class="footer">
+		</div>
+
 	</div>
-	
-
-
-
-<script>
-loadPage();
-</script>
-
-
-
+	<script>loadPage();</script>
 </body>
+
 </html>

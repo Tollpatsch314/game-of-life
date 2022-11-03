@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\game-of-life-main_flo",
+    "\\gof"
   ],
-  "SelectedNode": "\\game.js",
   "PreviewInSolutionExplorer": false
 }
