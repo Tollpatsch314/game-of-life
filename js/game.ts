@@ -11,7 +11,7 @@ function getMousePos(canvas, evt) {
 
 function getFieldPos(mousePos: {x: number, y: number}): object {
 	return {
-		x: Math.floor(mousePos.x / (ctx.canvas.height / GFieldData.cols)),
+		x: Math.floor(mousePos.x / (ctx.canvas.width / GFieldData.cols)),
 		y: Math.floor(mousePos.y / (ctx.canvas.height / GFieldData.rows))
 	};
 }
@@ -22,8 +22,9 @@ function loadPage() {	// Funktion lädt die Seite und den Canvas, sowie wichtige
 	ctx = canvas.getContext("2d");
 
 	function calcCtxSize() {
-		ctx.canvas.width = window.innerHeight / 10 * 9;
-		ctx.canvas.height = window.innerHeight / 10 * 9;
+		let min = Math.min(window.innerHeight, window.innerWidth);
+		ctx.canvas.width = min / 10 * 9;
+		ctx.canvas.height = min / 10 * 9;
 	}
 
 	calcCtxSize();
@@ -96,7 +97,7 @@ function clearField(): void {
 
 function changeInterval() {
 	let rng = document.getElementById("rngInterval") as HTMLInputElement;
-	GameStates.changeInterval(Math.log10(Math.abs(parseInt(rng.value))));
+	GameStates.changeInterval(parseInt(rng.value));
 }
 
 function drawField(field: GField): void {

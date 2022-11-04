@@ -15,7 +15,7 @@ class GFieldData {
 
 class GameStates {
     private static _timerID: number;
-    private static _tickInterval: number = 700;
+    private static _tickInterval: number = 700;     // time in ms (min. 20 ms)
     private static _isRunning: boolean;
 	private static _drawFunction: Function;
 
@@ -24,13 +24,13 @@ class GameStates {
 
         if(GameStates._isRunning) {
             window.clearInterval(GameStates._timerID);
-			GameStates._timerID = window.setInterval(gameIteration, GameStates._tickInterval, GameStates._drawFunction);
+			GameStates._timerID = window.setInterval(clock, 5, GameStates._tickInterval, GameStates._drawFunction);
         }
     }
 
     public static startGame(drawGameField: Function): void {
 		GameStates._drawFunction = drawGameField;
-        GameStates._timerID = window.setInterval(gameIteration, GameStates._tickInterval, drawGameField);
+        GameStates._timerID = window.setInterval(clock, 5, GameStates._tickInterval, drawGameField);
         GameStates._isRunning = true;
         console.log(GameStates._tickInterval);
     }
@@ -89,6 +89,21 @@ function getNextGen(gameField: GField, gameRules: Function): GField {
     }
 
     return nextGen;
+}
+
+var t_0: number = performance.now(), delta_t: number = 0;               // Damit der Slider eine lineare Änderung vornehmen kann
+function clock(interval: number, drawGameField: Function): void {
+    let t_1 = performance.now();
+    delta_t += t_1 - t_0;
+
+    if(delta_t < interval) {
+        t_0 = t_1;
+        return;
+    }
+
+    gameIteration(drawGameField);
+    delta_t = 0;
+    t_0 = performance.now();
 }
 
 function gameIteration(drawGameField: Function): void {
