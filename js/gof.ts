@@ -5,6 +5,7 @@ class GFieldData {
 	public static field: GField;
 	public static cols: number /* x_max */;
 	public static rows: number /* y_max */;
+    public static generation: number = 0;
 
 	public static genField(): GField {
 		GFieldData.field = makeGField(GFieldData.cols, GFieldData.rows);
@@ -14,7 +15,7 @@ class GFieldData {
 
 class GameStates {
     private static _timerID: number;
-    private static _tickInterval: number;
+    private static _tickInterval: number = 700;
     private static _isRunning: boolean;
 	private static _drawFunction: Function;
 
@@ -31,6 +32,7 @@ class GameStates {
 		GameStates._drawFunction = drawGameField;
         GameStates._timerID = window.setInterval(gameIteration, GameStates._tickInterval, drawGameField);
         GameStates._isRunning = true;
+        console.log(GameStates._tickInterval);
     }
 
     public static pauseGame(): void {
@@ -90,6 +92,7 @@ function getNextGen(gameField: GField, gameRules: Function): GField {
 }
 
 function gameIteration(drawGameField: Function): void {
+    GFieldData.generation++;
     GFieldData.field = getNextGen(GFieldData.field, gameRules);
     drawGameField(GFieldData.field);
 }

@@ -5,6 +5,7 @@ var GFieldData = /** @class */ (function () {
         GFieldData.field = makeGField(GFieldData.cols, GFieldData.rows);
         return GFieldData.field;
     };
+    GFieldData.generation = 0;
     return GFieldData;
 }());
 var GameStates = /** @class */ (function () {
@@ -21,6 +22,7 @@ var GameStates = /** @class */ (function () {
         GameStates._drawFunction = drawGameField;
         GameStates._timerID = window.setInterval(gameIteration, GameStates._tickInterval, drawGameField);
         GameStates._isRunning = true;
+        console.log(GameStates._tickInterval);
     };
     GameStates.pauseGame = function () {
         window.clearInterval(GameStates._timerID);
@@ -29,6 +31,7 @@ var GameStates = /** @class */ (function () {
     GameStates.isRunning = function () {
         return GameStates._isRunning;
     };
+    GameStates._tickInterval = 700;
     return GameStates;
 }());
 function makeGField(cols, rows) {
@@ -67,6 +70,7 @@ function getNextGen(gameField, gameRules) {
     return nextGen;
 }
 function gameIteration(drawGameField) {
+    GFieldData.generation++;
     GFieldData.field = getNextGen(GFieldData.field, gameRules);
     drawGameField(GFieldData.field);
 }

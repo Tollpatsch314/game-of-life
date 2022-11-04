@@ -22,7 +22,7 @@ function loadPage() {
         ctx.canvas.height = window.innerHeight / 10 * 9;
     }
     calcCtxSize();
-    // Default Werte
+    // Default Werte					<=========
     GFieldData.cols = 50;
     GFieldData.rows = 50;
     GFieldData.genField();
@@ -45,6 +45,9 @@ function loadPage() {
         if (!mousedown)
             return;
         drawEvent(evt);
+    });
+    canvas.addEventListener("mouseout", function (evt) {
+        mousedown = false;
     });
     canvas.addEventListener("click", drawEvent);
     window.addEventListener("resize", function (evt) {
@@ -72,10 +75,20 @@ function pauseGame() {
 }
 function clearField() {
     pauseGame();
+    GFieldData.generation = 0;
     drawField(GFieldData.genField());
+}
+function changeInterval() {
+    var rng = document.getElementById("rngInterval");
+    let x = Math.log10(Math.abs(parseInt(rng.value)));
+    GameStates.changeInterval(x);
+    console.log(x);
 }
 function drawField(field) {
     var xCan, yCan, width;
+    var lblGen = document.getElementById("lbl-generation");
+    lblGen.textContent = "Generation: " + GFieldData.generation.toString();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (var x = 0; x < GFieldData.cols; x++) {
         for (var y = 0; y < GFieldData.rows; y++) {
             xCan = x * ctx.canvas.height / GFieldData.cols;
@@ -85,7 +98,7 @@ function drawField(field) {
                 ctx.fillRect(xCan, yCan, width, width);
             }
             else {
-                ctx.fillStyle = "rgb(245, 245, 245)"; // <== keine schönere Lösung gefunden (die funktioniert)
+                ctx.fillStyle = "rgba(0, 0, 0, 0)";
                 ctx.fillRect(xCan, yCan, width, width);
                 ctx.fillStyle = "rgb(0, 0, 0)";
                 ctx.strokeRect(xCan, yCan, width, width);
