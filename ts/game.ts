@@ -1,7 +1,9 @@
+'use strict';
+
 var ctx: any;
 var canvas: HTMLCanvasElement;
 
-function getMousePos(canvas, evt) {
+function getMousePos(canvas: HTMLCanvasElement, evt: MouseEvent) {
 	var rect = canvas.getBoundingClientRect();
 	return {
 		x: evt.clientX - rect.left,

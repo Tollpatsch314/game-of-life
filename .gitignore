@@ -1,0 +1,9 @@
+# VS
+.vs/
+.vs/slnx.sqlite
+
+# VS Code
+.vscode/
+
+# TSC Output
+*.d.ts

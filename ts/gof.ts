@@ -1,3 +1,4 @@
+'use strict';
 
 type GField = Array<Uint8Array>;
 
@@ -68,8 +69,12 @@ function getNeighborCount(x: number, y: number, gameField: GField): number {
     return count;
 }
 
-function gameRules(neighborCount: number, cellLive: boolean): boolean {
-    return neighborCount == 3 || (neighborCount == 2 && cellLive);
+function gameRules(neighborCount: number, cellLife: boolean): boolean {             // Spielregeln für das "normale" Game of Life
+    return neighborCount == 3 || (neighborCount == 2 && cellLife);
+}
+
+function gameRulesInversed(neighborCount: number, cellLife: boolean): boolean {     // Spielregeln für inversed Game of Life
+    return !gameRules(neighborCount, cellLife);
 }
 
 function getNextGen(gameField: GField, gameRules: Function): GField {
