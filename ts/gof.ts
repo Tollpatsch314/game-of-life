@@ -48,7 +48,7 @@ class GameStates {
 
 function makeGField(cols: number, rows: number): GField {
     let arr = new Array<Uint8Array>(cols);
-	for(let x: number = 0; x < cols; x++) arr[x] = new Uint8Array(cols).fill(0);
+	for(let x: number = 0; x < cols; x++) arr[x] = new Uint8Array(rows).fill(0);
 	return arr;
 }
 

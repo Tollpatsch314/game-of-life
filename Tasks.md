@@ -4,12 +4,9 @@
 
 - "Spiel" - Funktion
 - Auswertungsfunktionen
-- JS lernen
-- Zufällig generiertes Feld
-- Ausgabe
+- Zufï¿½llig generiertes Feld
 - Startbutton => Konfiguration
 - Start mit 5 vorgefertigten Feldern
-- 50x50 Feld
 
 ===
 
@@ -17,11 +14,11 @@
 - Zufall festlegen
 - Tooltip-Doku, generelle Doku?
 
-! Lauffähigkeit in Firefox & Chrome
+! Lauffï¿½higkeit in Firefox & Chrome
 
 Material UI mgl.
 Durchdachtes UI-Desing
-Code muss von beiden erklärbar sein!
+Code muss von beiden erklï¿½rbar sein!
 
 
 - Torsten kann Programm testen

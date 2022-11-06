@@ -5,12 +5,13 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="stylesheet" href="css/stylesheet.css" />
 	<link rel="stylesheet" href="css/range-style.css" />
+	<link rel="stylesheet" href="css/radio-style.css" />
 	<script type="text/JavaScript" src="js/gof.js"></script>
-	<script type="text/JavaScript" src="js/game.js"></script>
 	<title>Conways Game of Life</title>
 </head>
 
 <body>
+
 	<div class="container">
 
 		<div class="header">
@@ -18,25 +19,51 @@
 		</div>
 
 		<div class="config-menue">
-			<table><tr>
-				<td><input type="button" id="btnStartPause" class="btn-start" onclick="startGame()" value="Start" /></td>
-				<td width="10px"></td>
-				<td><input type="button" class="btn-reset" onclick="clearField();" value="Zur&uuml;cksetzten" /></td>
-			</tr></table>
+			<table>
+				<tr>
+					<td><input type="button" id="btnStartPause" class="btn-start" onclick="startGame()" value="Start" /></td>
+					<td width="10px"></td>
+					<td><input type="button" id="btnReset" class="btn-reset" onclick="resetField();" value="Zur&uuml;cksetzten" disabled="true" /></td>
+				</tr>
+			</table>
 			<br /><br />
-			<input type="button" id="rngbth" class="btn-rng disabled" onclick="rand(17)" value="Rng"/>
-			<br /><br />
-			<input type="button" onclick="location.href='help.html';" value="Hilfe" />
-			<br /><br />
-			
+
+			<h2>Spielregeln</h2>
+			<fieldset>
+				<input type="radio" id="rdoNormalRules" value="Klassisch" />
+				<input type="radio" id="rdoReversedRules" value="Invertiert" />
+			</fieldset>
+
+			<h2>Randregeln</h2>
+			<fieldset>
+				<input type="radio" id="rdoNorma7lRules" value="Überlappend" />
+				<input type="radio" id="rdoReverse7dRules" value="Endend" />
+				<input type="radio" id="rdoRevers7edRules" value="Spiegelnd/Abprallend?" />
+			</fieldset>
+
+			<div id="inputPreview">
+				<input name="cssCheckbox" id="demo_opt_1" type="radio" class="css-checkbox">
+				<label for="demo_opt_1">Option 1</label>
+				<input name="cssCheckbox" id="demo_opt_2" type="radio" class="css-checkbox" checked="">
+				<label for="demo_opt_2">Option 2</label>
+				<input name="cssCheckbox" id="demo_opt_3" type="radio" class="css-checkbox">
+				<label for="demo_opt_3">Option 3</label>
+			</div>
+
 			<table>
 				<tr><td colspan="3"><h3>Berechnungsintervall</h3></td></tr>
 				<tr>
 					<td><h4>20 ms</h4></td>
-					<td width="80%"><input type="range" id="rngInterval" onchange="changeInterval();" min="20" max="1000" step="5" value="100" /></td>
+					<td width="80%"><input type="range" id="rngInterval" onchange="changeInterval();" min="20" max="1000" step="5" value="700" /></td>
 					<td><h4>1 s</h4></td>
 				</tr>
+				<tr><td></td><td colspan="2">Intervall: </td></tr>
 			</table>
+
+			<input type="button" id="rngbth" class="btn-rng" onclick="rand(17)" value="Rng" />
+			<br /><br />
+			<input type="button" onclick="location.href='help.html';" value="Hilfe" />
+			<br /><br />
 		</div>
 
 		<div class="game-stage">
@@ -47,10 +74,13 @@
 		</div>
 
 		<div class="footer">
+
 		</div>
 
 	</div>
+
 	<script>loadPage();</script>
+
 </body>
 
 </html>

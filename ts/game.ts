@@ -2,6 +2,7 @@
 
 var ctx: any;
 var canvas: HTMLCanvasElement;
+var firstStart: boolean = false;
 
 function getMousePos(canvas: HTMLCanvasElement, evt: MouseEvent) {
 	var rect = canvas.getBoundingClientRect();
@@ -49,30 +50,39 @@ function loadPage() {	// Funktion lädt die Seite und den Canvas, sowie wichtige
 		mouseIsSetting = GFieldData.field[pos.x][pos.y] != 0 ? false : true;
 	});
 
-	canvas.addEventListener("mouseup", function (evt) {
+	canvas.addEventListener("mouseup", (evt) => {
 		drawEvent(evt);
 		mousedown = false;
 	});
 
-	canvas.addEventListener("mousemove", function(evt) {
+	canvas.addEventListener("mousemove", (evt) => {
 		if(!mousedown) return;
 		drawEvent(evt);
 	});
 
-	canvas.addEventListener("mouseout", function(evt) {
+	canvas.addEventListener("mouseout", () => {
 		mousedown = false;
 	})
 
 	canvas.addEventListener("click", drawEvent);
 
-	window.addEventListener("resize", function(evt) {
+	window.addEventListener("resize", () => {
 		calcCtxSize();
 		drawField(GFieldData.field);
 	});
 }
 
+function enableReset() {
+	if(!firstStart) {
+		firstStart = true;
+		let btn = document.getElementById("btnReset") as HTMLButtonElement;
+		btn.removeAttribute("disabled");
+	}
+}
+
 function startGame(): void {
 	GameStates.startGame(drawField);
+	enableReset();
 	let btn = document.getElementById("btnStartPause") as HTMLButtonElement;
     if(btn !== null) {
 		btn.classList.replace("btn-start", "btn-pause");
@@ -89,6 +99,13 @@ function pauseGame(): void {
 		btn.onclick = startGame;
 		btn.value = "Start";
 	}
+}
+
+function resetField(): void {
+	let btn = document.getElementById("btnReset") as HTMLButtonElement;
+	btn.setAttribute("disabled", "true");
+	firstStart = false;
+	clearField();
 }
 
 function clearField(): void {

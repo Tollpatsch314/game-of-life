@@ -7,3 +7,5 @@
 
 # TSC Output
 *.d.ts
+*.js
+*.js.map
