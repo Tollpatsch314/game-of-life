@@ -66,7 +66,7 @@ class GameField {
 		return count;
 	}
 
-	public getNeigborCount(x: number, y: number) : number {
+	public getNeigborCount(x: number, y: number) : number {							// Anzahl der leb. Nachbarn
 		let count: number = -this._fieldCalcFunc(this, x, y);						// Eigenes Feld wird in den for-Schleifen mit beachtet
 
 		for(let delta_y: number = -1; delta_y < 2; delta_y++) {

@@ -72,8 +72,8 @@ class Game {
 	public getGeneration() : string { return this._generation.toString(); }
 
 	public gameIteration() : void {
-		if(performance.now() - this._t_0 < this._tickInterval)
-			return;	
+		if(performance.now() - this._t_0 < this._tickInterval)		// => delta_t < festgelegtes Interval ?
+			return;													//		==> return
 
 		this._generation++;											// neue Generation
 		this._field.field = this.getNextGen();
