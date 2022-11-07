@@ -34,13 +34,15 @@ function loadPage() : void {	// Funktion lädt die Seite und den Canvas, sowie w
 	calcCtxSize();
 
 	// Default Werte					<=========
-	game = new Game(new GameField(50, 50, drawField));
+	game = new Game(new GameField(200, 200, drawField));
 	gameField = game.getGameField();
 	gameField.draw();
 
 	// Deaktiviert reset-Button
 	let btn = document.getElementById("btnReset") as HTMLButtonElement;
 	btn.setAttribute("disabled", "true");
+
+	//let 
 
 	// Pause => Start
 	pauseGame();
@@ -90,32 +92,35 @@ function rand(min: number, max: number) : number {				// generiert Zufallszahl
 	return Math.round(Math.random() * (max - min + 1) - 0.5) + min;
 }
 
-function randInit(percentageLivingCells: number) : void {
-	let absoluteCount = Math.round((percentageLivingCells / 100) * gameField.rows * gameField.cols);
-	absoluteCount -= gameField.getLivingCellCount();
+function randInit(percentageLivingCells: number) : void {		// zufällige Befüllung, bzw. entfernen der Felder
+	let absoluteCount = Math.round((percentageLivingCells / 100) * gameField.rows * gameField.cols);	// absolute Anzahl an gewünschten Feldern
+	absoluteCount -= gameField.getLivingCellCount();			// zu ändernde Zellen
 
-	let add_val: boolean;
-	if(absoluteCount == 0) return;
-	else if(absoluteCount > 0) add_val = true;
-	else {
-		add_val = false;
+	let addVal: boolean;
+
+	if(absoluteCount == 0)										// nichts zu ändern
+		return;
+	else if(absoluteCount > 0)									// es müssen welche hinzugefügt werden
+		addVal = true;
+	else {														// es müssen Felder entfernt werden
+		addVal = false;
 		absoluteCount *= -1;
 	}
 
-	function genX() : number { return rand(0, gameField.cols); }
-	function genY() : number { return rand(0, gameField.rows); }
+	function genX() : number { return rand(0, gameField.cols); }	// generiert eine zufällige Ordinate
+	function genY() : number { return rand(0, gameField.rows); }	// generiert eine zufällige Abszisse
 
-	let n = 0;
+	let n = 0;													// Zähler für Felder
 
 	while(true) {
-		let x_spot: number = genX(), y_spot: number = genY();
+		let x_spot: number = genX(), y_spot: number = genY();	// generiere Koordinaten eines "Spots"
 
 		for(let k = 0; k < rand(2, 5); k++) {
 			let x: number = rand(-2, 2) + x_spot, y: number = rand(-2, 2) + y_spot;
 			x = (x + gameField.cols) % gameField.cols, y = (y + gameField.rows) % gameField.rows;
 
-			if(gameField.getCell(x, y) ? !add_val : add_val)  {					// leider gibt es kein XOR in JS ):
-				gameField.setCell(x, y, add_val);
+			if(gameField.getCell(x, y) ? !addVal : addVal)  {					// leider gibt es kein XOR in JS ):
+				gameField.setCell(x, y, addVal);
 				n++;
 			}
 
