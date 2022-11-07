@@ -23,7 +23,7 @@
 				<tr>
 					<td><input type="button" id="btnStartPause" class="btn-start" onclick="startGame()" value="Start" /></td>
 					<td width="10px"></td>
-					<td><input type="button" id="btnReset" class="btn-reset" onclick="loadPage();" value="Zur&uuml;cksetzten" disabled="true" /></td>
+					<td><input type="button" id="btnReset" class="btn-reset" onclick="reset();" value="Zur&uuml;cksetzten" disabled="true" /></td>
 				</tr>
 			</table>
 			<br /><br />
@@ -60,7 +60,7 @@
 				<tr><td></td><td colspan="2">Intervall: </td></tr>
 			</table>
 
-			<input type="button" id="rngbth" class="btn-rng" onclick="rand(17)" value="Rng" />
+			<input type="button" id="rngbth" class="btn-rng" onclick="randInit(17)" value="Rng" />
 			<br /><br />
 			<input type="button" onclick="location.href='help.html';" value="Hilfe" />
 			<br /><br />

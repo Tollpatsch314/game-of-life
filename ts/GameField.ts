@@ -2,7 +2,7 @@
 
 type GField = Array<Uint8Array>;
 
-function makeGField(cols: number, rows: number): GField {
+function makeGField(cols: number, rows: number) : GField {
 	let arr = new Array<Uint8Array>(cols);
 	for(let x: number = 0; x < cols; x++) arr[x] = new Uint8Array(rows).fill(0);
 	return arr;
@@ -54,6 +54,18 @@ class GameField {
 	public setCell(x: number, y: number, alive: boolean) : void { this.field[x][y] = alive ? 1 : 0; }
 
 	public draw() : void { this._drawFunc(this.field); }
+
+	public getLivingCellCount() : number {
+		let count = 0;
+
+		for(let x: number = 0; x < this.cols; x++) {
+			for(let y: number = 0; y < this.rows; y++) {
+				if(this.getCell(x, y)) count++;
+			}
+		}
+
+		return count;
+	}
 
 	public getNeigborCount(x: number, y: number) : number {
 		let count: number = -this._fieldCalcFunc(this, x, y);						// Eigenes Feld wird in den for-Schleifen mit beachtet

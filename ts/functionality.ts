@@ -5,7 +5,7 @@ var canvas: HTMLCanvasElement;
 var game: Game;
 var gameField: GameField;
 
-function getMousePos(canvas: HTMLCanvasElement, evt: MouseEvent) {
+function getMousePos(canvas: HTMLCanvasElement, evt: MouseEvent) : {x: number, y: number} {
 	var rect = canvas.getBoundingClientRect();
 	return {
 		x: evt.clientX - rect.left,
@@ -13,7 +13,7 @@ function getMousePos(canvas: HTMLCanvasElement, evt: MouseEvent) {
 	};
 }
 
-function getFieldPos(mousePos: {x: number, y: number}): object {
+function getFieldPos(mousePos: {x: number, y: number}) : {x: number, y: number} {
 	return {
 		x: Math.floor(mousePos.x / (ctx.canvas.width / gameField.cols)),
 		y: Math.floor(mousePos.y / (ctx.canvas.height / gameField.rows))
@@ -21,7 +21,7 @@ function getFieldPos(mousePos: {x: number, y: number}): object {
 }
 
 var mousedown: boolean, mouseIsSetting: boolean;
-function loadPage() {	// Funktion lädt die Seite und den Canvas, sowie wichtige Variablen
+function loadPage() : void {	// Funktion lädt die Seite und den Canvas, sowie wichtige Variablen
 	canvas = document.getElementById("game-field") as HTMLCanvasElement;
 	ctx = canvas.getContext("2d");
 
@@ -45,15 +45,15 @@ function loadPage() {	// Funktion lädt die Seite und den Canvas, sowie wichtige
 	// Pause => Start
 	pauseGame();
 	
-	function drawEvent(evt: MouseEvent): void {
-		var pos = getFieldPos(getMousePos(canvas, evt)) as {x: number, y: number};
+	function drawEvent(evt: MouseEvent) : void {
+		var pos = getFieldPos(getMousePos(canvas, evt));
 		gameField.setCell(pos.x, pos.y, mouseIsSetting);
 		gameField.draw();
 	}
 
 	canvas.addEventListener("mousedown", (evt) => {
 		mousedown = true;
-		var pos = getFieldPos(getMousePos(canvas, evt)) as {x: number, y: number};
+		var pos = getFieldPos(getMousePos(canvas, evt));
 		mouseIsSetting = !gameField.getCell(pos.x, pos.y);
 	});
 
@@ -79,6 +79,44 @@ function loadPage() {	// Funktion lädt die Seite und den Canvas, sowie wichtige
 	});
 }
 
+function rand(min: number, max: number) : number {
+	return Math.round(Math.random() * (max - min + 1) - 0.5) + min;
+}
+
+function randInit(percentageLivingCells: number) : void {
+	let absoluteCount = Math.round((percentageLivingCells / 100) * gameField.rows * gameField.cols);
+	absoluteCount -= gameField.getLivingCellCount();
+
+	function genX() : number { return rand(0, gameField.cols); }
+	function genY() : number { return rand(0, gameField.rows); }
+
+	let n = 0;
+
+	while(true) {
+		let x_spot: number = genX(), y_spot: number = genY();
+
+		for(let k = 0; k < rand(2, 5); k++) {
+			let x: number = rand(-2, 2) + x_spot, y: number = rand(-2, 2) + y_spot;
+			x = (x + gameField.cols) % gameField.cols, y = (y + gameField.rows) % gameField.rows;
+
+			if(!gameField.getCell(x, y))  {
+				gameField.setCell(x, y, true);
+				n++;
+			}
+
+			if(n >= absoluteCount) {
+				gameField.draw();
+				return;
+			}
+		}
+	}
+}
+
+function reset() : void {
+	game.reset();
+	loadPage();
+}
+
 function enableReset() : void {
 	if(game.isResetable()) {
 		let btn = document.getElementById("btnReset") as HTMLButtonElement;
@@ -86,7 +124,7 @@ function enableReset() : void {
 	}
 }
 
-function startGame(): void {
+function startGame() : void {
 	game.startGame();
 	enableReset();
 	let btn = document.getElementById("btnStartPause") as HTMLButtonElement;
@@ -97,7 +135,7 @@ function startGame(): void {
 	}
 }
 
-function pauseGame(): void {
+function pauseGame() : void {
 	game.pauseGame();
 	let btn = document.getElementById("btnStartPause") as HTMLButtonElement;
 
@@ -108,16 +146,16 @@ function pauseGame(): void {
 	}
 }
 
-function clearField(): void {
+function clearField() : void {
 	gameField = new GameField(50, 50, drawField);
 }
 
-function changeInterval() {
+function changeInterval() : void {
 	let rng = document.getElementById("rngInterval") as HTMLInputElement;
 	game.setInterval(parseInt(rng.value));
 }
 
-function drawField(field: GField): void {
+function drawField(field: GField) : void {
 	let xCan, yCan, width;
 
 	let lblGen = document.getElementById("lbl-generation") as HTMLLabelElement;
@@ -142,7 +180,7 @@ function drawField(field: GField): void {
 	}
 }
 
-function f_pentomino() {
+function f_pentomino() : void {
     gameField.field[25][25] = 1;
     gameField.field[25][26] = 1;
     gameField.field[25][27] = 1;
