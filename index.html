@@ -23,33 +23,33 @@
 				<tr width="100%">
 					<td width="50%"><input type="button" id="btnStartPause" class="btn-start" onclick="startGame()" value="Start" />
 						<!--<button id="btnStartPause" class="btn-start" onclick="startgame()">Start</button>--></td>
-					<td width="30px"></td>
-					<td widht="100%"><input type="button" id="btnReset" class="btn-reset" onclick="resetField();" value="Reset" disabled="true" /></td>
+					<td width="10px"></td>
+					<td widht="100%"><input type="button" id="btnReset" class="btn-reset" onclick="reset();" value="Reset" disabled="true" /></td>
 				</tr>
 			</table>
 			<br /><br />
 
 			<h2>Spielregeln</h2>
 		
-			<div class="toggle-buttons">
-				<input name="cssCheckbox" id="demo_opt_1" type="radio" >
-				<label for="demo_opt_1">Option 1</label>
-				<input name="cssCheckbox" id="demo_opt_2" type="radio"  checked="">
-				<label for="demo_opt_2">Option 2</label>
-				
+			<div class="toggle-buttons together">
+				<input name="game-rules" id="gameRule0" type="radio" onclick="toggleGameRule(0);" checked="true" />
+				<label for="gameRule0">Klassisch</label>
+				<input name="game-rules" id="gameRule1" type="radio" onclick="toggleGameRule(1);" />
+				<label for="gameRule1">Invertiert</label>		
 			</div>
 
-			<h2>Randregeln</h2>
-			
-			
+			<br />
+			<h2>Randregeln</h2>	
 
-			<div class="toggle-buttons">
-				<input name="cssCheckbox2" id="demo_opt_3" type="radio" >
-				<label for="demo_opt_3">Option 3</label>
-				<input name="cssCheckbox2" id="demo_opt_4" type="radio"  checked="">
-				<label for="demo_opt_4">Option 4</label>
-				<input name="cssCheckbox2" id="demo_opt_5" type="radio" >
-				<label for="demo_opt_5">Option 5</label>
+			<div class="toggle-buttons together">
+				<input name="edge-rules" id="edgeRule0" type="radio" onclick="toggleEdgeRule(0);" checked="true" />
+				<label for="edgeRule0">&uuml;berlappend</label>
+				<input name="edge-rules" id="edgeRule1" type="radio" onclick="toggleEdgeRule(1);" />
+				<label for="edgeRule1">immer tot</label>
+				<input name="edge-rules" id="edgeRule2" type="radio" onclick="toggleEdgeRule(2);" />
+				<label for="edgeRule2">immer lebendig</label>
+				<input name="edge-rules" id="edgeRule3" type="radio" onclick="toggleEdgeRule(3);" />
+				<label for="edgeRule3">spiegelnd</label>
 			</div>
 
 			<table>
@@ -57,12 +57,24 @@
 				<tr>
 					<td><h4>20 ms</h4></td>
 					<td width="80%"><input type="range" id="rngInterval" class="slider" onchange="changeInterval();" min="20" max="1000" step="5" value="700" /></td>
-					<td><h4>1 s</h4><label for="rngInterval">200</label>ms</td>
+					<td><h4>1 s</h4></td>
 				</tr>
 				<tr>
+					<td></td>
+					<td>Intervall: <label id="lblInterval">200</label> <label id="lblIntervalUnit">ms</label></td>
+					<td></dt>
+				</tr>
+				<tr><td colspan="3"></td></tr>
+				<tr><td colspan="3"><h3>Anteil lebendiger Zellen</h3></td></tr>
+				<tr>
 					<td><h4>0%</h4></td>
-					<td width="80%"><input type="range" id="rngNumber" class="slider" onchange="changeInterval();" min="0" max="1" step="0.001" value="0" /></td>
-					<td><h4>100%</h4><label for="rngNumber">3</label>%</td>
+					<td width="80%"><input type="range" id="rngDistrib" class="slider" onchange="changeDistrib();" min="0" max="100" step="0.01" value="0" /></td>
+					<td><h4>100%</h4></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>Anteil: <label id="lblDistrib">99,99</label> %</td>
+					<td></dt>
 				</tr>
 			</table>
 
@@ -84,13 +96,11 @@
 
 		<div class="game-stage">
 			<div>
-				<label id="lbl-generation"><b>Generation: 0</b></label>
+				<b>Generation: <label id="lbl-generation"><b>0</b></label></b>
 				<div><canvas id="game-field"></canvas></div>
 			</div>
 		</div>
 		
-
-	
 
 	</div>
 

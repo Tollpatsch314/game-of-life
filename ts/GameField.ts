@@ -14,12 +14,12 @@ class FieldCalc {
 	}
 
 	public static deadEdges(f: GameField, x: number, y: number) : number {			// Die Ränder werden als tod interpretiert
-		let l = (f.field as GField)[x][y];
+		let l = (f.field as GField)?.[x]?.[y];
 		return l !== undefined ? l : 0;
 	}
 
 	public static livingEdges(f: GameField, x: number, y: number) : number {		// Die Ränder werden als lebendig interpretiert
-		let l = (f.field as GField)[x][y];
+		let l = (f.field as GField)?.[x]?.[y];										// ?. lässt undefined zu
 		return l !== undefined ? l : 1;
 	}
 
@@ -36,12 +36,11 @@ class GameField {
 	private _drawFunc: Function;			// Speichert die Zeichenfunktion (änderbar)
 	private _fieldCalcFunc: Function;		// Speichert die Berechnungsfunktion (änderbar)
 
-	public constructor(cols: number, rows: number, drawFunc: Function) {
+	public constructor(cols: number, rows: number, drawFunc: Function) {			// Konstruktor
 		this.cols = cols;
 		this.rows = rows;
 		this.field = makeGField(this.cols, this.rows);
 		this._drawFunc = drawFunc;
-		//this.draw();
 		this._fieldCalcFunc = FieldCalc.overlapingEdges;
 	}
 
@@ -67,7 +66,7 @@ class GameField {
 		return count;
 	}
 
-	public getNeigborCount(x: number, y: number) : number {
+	public getNeigborCount(x: number, y: number) : number {							// Anzahl der leb. Nachbarn
 		let count: number = -this._fieldCalcFunc(this, x, y);						// Eigenes Feld wird in den for-Schleifen mit beachtet
 
 		for(let delta_y: number = -1; delta_y < 2; delta_y++) {
