@@ -71,7 +71,9 @@ input[type=button]:not(:disabled):active {
 	grid-area:header;
 }
   
-
+.footer {
+	grid-area:footer;
+}
 
 #game-field {
   display:grid;
@@ -84,7 +86,6 @@ input[type=button]:not(:disabled):active {
 
 
 #helpinfobox {
-	
   display:grid;
   grid-template-columns:auto auto;
 }
