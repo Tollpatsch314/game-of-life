@@ -23,7 +23,7 @@
 				<tr width="100%">
 					<td width="50%"><input type="button" id="btnStartPause" class="btn-start" onclick="startGame()" value="Start" />
 						<!--<button id="btnStartPause" class="btn-start" onclick="startgame()">Start</button>--></td>
-					<td width="10px"></td>
+					<td width="30px"></td>
 					<td widht="100%"><input type="button" id="btnReset" class="btn-reset" onclick="resetField();" value="Reset" disabled="true" /></td>
 				</tr>
 			</table>
@@ -31,7 +31,7 @@
 
 			<h2>Spielregeln</h2>
 		
-			<div class="toggle-buttons together">
+			<div class="toggle-buttons">
 				<input name="cssCheckbox" id="demo_opt_1" type="radio" >
 				<label for="demo_opt_1">Option 1</label>
 				<input name="cssCheckbox" id="demo_opt_2" type="radio"  checked="">
@@ -43,7 +43,7 @@
 			
 			
 
-			<div class="toggle-buttons together">
+			<div class="toggle-buttons">
 				<input name="cssCheckbox2" id="demo_opt_3" type="radio" >
 				<label for="demo_opt_3">Option 3</label>
 				<input name="cssCheckbox2" id="demo_opt_4" type="radio"  checked="">
@@ -69,7 +69,17 @@
 			
 			<br /><br />
 			<input type="button" id="btn-help" onclick="location.href='help.html';" value="Hilfe" />
-			<br /><br />
+			
+			<div class="presetbox">
+				<input type="button" id="btndropdown" class="btn-presets" onclick="" value="Presets" />
+				<div class="presets">
+				
+					<a href="#">Link 1</a>
+   					<a href="#">Link 2</a>
+   					<a href="#">Link 3</a>
+				</div>
+	
+			</div>
 		</div>
 
 		<div class="game-stage">
@@ -77,6 +87,9 @@
 				<label id="lbl-generation"><b>Generation: 0</b></label>
 				<div><canvas id="game-field"></canvas></div>
 			</div>
+		</div>
+		
+
 	
 
 	</div>
