@@ -15,6 +15,7 @@ class Game {
 	private _timerID: number = 0;
 	private _tickInterval: number = 700;     // time in ms (min. 20 ms)
 	private _isRunning: boolean = false;
+	private _isResetable: boolean = false;
 	private _gameRules: Function;
 	private _generation: number = 0;
 	private _t_0: number = 0;
@@ -24,14 +25,24 @@ class Game {
 		this._gameRules = GameRules.normal;
 	}
 
-	public isGameRunning() : boolean {
-		return this._isRunning;
+	public isGameRunning() : boolean { return this._isRunning; }
+
+	public isResetable() : boolean { return this._isResetable; }
+
+	public reset() : boolean {
+		if(!this._isResetable) return false;
+		this.pauseGame();
+		this._generation = 0;
+		this._field.genField();
+		return true;
 	}
 
 	public startGame() : void {
 		if(!this._isRunning) {
 			this._isRunning = true;
-			this._timerID = window.setInterval(this.gameIteration.bind(this), 5);
+			this._isResetable = true;
+			var t: Game = this;
+			this._timerID = window.setInterval(t.gameIteration.bind(t), 5);
 		}
 	}
 
@@ -40,12 +51,15 @@ class Game {
 		this._isRunning = false;
 	}
 
-	public changeInterval(interval: number) : void {
+	public setGameRules(func: Function) : void { this._gameRules = func; }
+
+	public setInterval(interval: number) : void {
 		this._tickInterval = interval;
 
 		if(this._isRunning) {
 			window.clearInterval(this._timerID);
-			this._timerID = window.setInterval(this.gameIteration.bind(this), 5);
+			var t: Game = this;
+			this._timerID = window.setInterval(t.gameIteration.bind(t), 5);
 		}
 	}
 
@@ -68,7 +82,7 @@ class Game {
 
 	private getNextGen() : GField {									// Erzeugt die nächste Generation
 		let nextGen: GField = makeGField(this._field.cols, this._field.rows);
-		let neighborCount: Function = this._field.getNeigborCount;
+		let neighborCount: Function = this._field.getNeigborCount.bind(this._field);
 	
 		for(let x = 0; x < this._field.cols; x++) {
 			for(let y = 0; y < this._field.rows; y++) {

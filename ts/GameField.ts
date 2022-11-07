@@ -9,13 +9,23 @@ function makeGField(cols: number, rows: number): GField {
 }
 
 class FieldCalc {
-	public static overlapingEdges(f: GameField, x: number, y: number) : number {
+	public static overlapingEdges(f: GameField, x: number, y: number) : number {	// Die Ränder "überlappen" (x = 0) - 1 => x_max, usw.
 		return f.field[(x + f.cols) % f.cols][(y + f.rows) % f.rows] as number;
 	}
 
-	public static endingEdges(f: GameField, x: number, y: number) : number {
+	public static deadEdges(f: GameField, x: number, y: number) : number {			// Die Ränder werden als tod interpretiert
 		let l = (f.field as GField)[x][y];
 		return l !== undefined ? l : 0;
+	}
+
+	public static livingEdges(f: GameField, x: number, y: number) : number {		// Die Ränder werden als lebendig interpretiert
+		let l = (f.field as GField)[x][y];
+		return l !== undefined ? l : 1;
+	}
+
+	public static mirrorEdges(f: GameField, x: number, y: number) : number {		// Die Ränder spiegeln die Lebendigkeit (an der x- und y-Achse)
+		let l = (f.field as GField)[x][y];											// TODO
+		return l !== undefined ? l : 1;
 	}
 }
 
@@ -23,8 +33,8 @@ class GameField {
 	public   field: GField;
 	public   cols: number /* x_max */;
 	public   rows: number /* y_max */;
-	private _drawFunc: Function;
-	private _fieldCalcFunc: Function;
+	private _drawFunc: Function;			// Speichert die Zeichenfunktion (änderbar)
+	private _fieldCalcFunc: Function;		// Speichert die Berechnungsfunktion (änderbar)
 
 	public constructor(cols: number, rows: number, drawFunc: Function) {
 		this.cols = cols;
@@ -37,7 +47,7 @@ class GameField {
 
 	public genField() : void { this.field = makeGField(this.cols, this.rows); }
 
-	public changeFieldCalculation(calcFunc: Function) : void { this._fieldCalcFunc = calcFunc; }
+	public setFieldCalculation(calcFunc: Function) : void { this._fieldCalcFunc = calcFunc; }
 
 	public getCell(x: number, y: number) : boolean { return this.field[x][y] != 0; }
 
@@ -46,14 +56,14 @@ class GameField {
 	public draw() : void { this._drawFunc(this.field); }
 
 	public getNeigborCount(x: number, y: number) : number {
-		let count: number = -this._fieldCalcFunc(this, x, y);
+		let count: number = -this._fieldCalcFunc(this, x, y);						// Eigenes Feld wird in den for-Schleifen mit beachtet
 
 		for(let delta_y: number = -1; delta_y < 2; delta_y++) {
 			for(let delta_x: number = -1; delta_x < 2; delta_x++) {
-				count += this._fieldCalcFunc(this, x, y);
+				count += this._fieldCalcFunc(this, x + delta_x, y + delta_y);
 			}
 		}
-
+		
 		return count;
 	}
 }

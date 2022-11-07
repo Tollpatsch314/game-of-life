@@ -36,6 +36,14 @@ function loadPage() {	// Funktion lädt die Seite und den Canvas, sowie wichtige
 	// Default Werte					<=========
 	game = new Game(new GameField(50, 50, drawField));
 	gameField = game.getGameField();
+	gameField.draw();
+
+	// Deaktiviert reset-Button
+	let btn = document.getElementById("btnReset") as HTMLButtonElement;
+	btn.setAttribute("disabled", "true");
+
+	// Pause => Start
+	pauseGame();
 	
 	function drawEvent(evt: MouseEvent): void {
 		var pos = getFieldPos(getMousePos(canvas, evt)) as {x: number, y: number};
@@ -43,36 +51,44 @@ function loadPage() {	// Funktion lädt die Seite und den Canvas, sowie wichtige
 		gameField.draw();
 	}
 
-	canvas.addEventListener("mousedown", function (evt) {
+	canvas.addEventListener("mousedown", (evt) => {
 		mousedown = true;
 		var pos = getFieldPos(getMousePos(canvas, evt)) as {x: number, y: number};
 		mouseIsSetting = !gameField.getCell(pos.x, pos.y);
 	});
 
-	canvas.addEventListener("mouseup", function (evt) {
+	canvas.addEventListener("mouseup", (evt) => {
 		drawEvent(evt);
 		mousedown = false;
 	});
 
-	canvas.addEventListener("mousemove", function(evt) {
+	canvas.addEventListener("mousemove", (evt) => {
 		if(!mousedown) return;
 		drawEvent(evt);
 	});
 
-	canvas.addEventListener("mouseout", function() {
+	canvas.addEventListener("mouseout", () => {
 		mousedown = false;
 	})
 
 	canvas.addEventListener("click", drawEvent);
 
-	window.addEventListener("resize", function() {
+	window.addEventListener("resize", () => {
 		calcCtxSize();
 		gameField.draw();
 	});
 }
 
+function enableReset() : void {
+	if(game.isResetable()) {
+		let btn = document.getElementById("btnReset") as HTMLButtonElement;
+		btn.removeAttribute("disabled");
+	}
+}
+
 function startGame(): void {
 	game.startGame();
+	enableReset();
 	let btn = document.getElementById("btnStartPause") as HTMLButtonElement;
     if(btn !== null) {
 		btn.classList.replace("btn-start", "btn-pause");
@@ -98,7 +114,7 @@ function clearField(): void {
 
 function changeInterval() {
 	let rng = document.getElementById("rngInterval") as HTMLInputElement;
-	game.changeInterval(parseInt(rng.value));
+	game.setInterval(parseInt(rng.value));
 }
 
 function drawField(field: GField): void {
