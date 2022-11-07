@@ -14,12 +14,12 @@ class FieldCalc {
 	}
 
 	public static deadEdges(f: GameField, x: number, y: number) : number {			// Die Ränder werden als tod interpretiert
-		let l = (f.field as GField)[x][y];
+		let l = (f.field as GField)?.[x]?.[y];
 		return l !== undefined ? l : 0;
 	}
 
 	public static livingEdges(f: GameField, x: number, y: number) : number {		// Die Ränder werden als lebendig interpretiert
-		let l = (f.field as GField)[x][y];
+		let l = (f.field as GField)?.[x]?.[y];
 		return l !== undefined ? l : 1;
 	}
 

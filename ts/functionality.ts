@@ -27,8 +27,8 @@ function loadPage() : void {	// Funktion lädt die Seite und den Canvas, sowie w
 
 	function calcCtxSize() {	// Berechnung des Context vom Canvas
 		let min = Math.min(window.innerHeight, window.innerWidth);
-		ctx.canvas.width = min / 10 * 9;
-		ctx.canvas.height = min / 10 * 9;
+		ctx.canvas.width = min / 10 * 8.6;
+		ctx.canvas.height = min / 10 * 8.6;
 	}
 
 	calcCtxSize();
@@ -86,7 +86,7 @@ function loadPage() : void {	// Funktion lädt die Seite und den Canvas, sowie w
 	}
 }
 
-function rand(min: number, max: number) : number {
+function rand(min: number, max: number) : number {				// generiert Zufallszahl
 	return Math.round(Math.random() * (max - min + 1) - 0.5) + min;
 }
 
@@ -143,6 +143,8 @@ function startGame() : void {
 	game.startGame();
 	enableReset();
 	let btn = document.getElementById("btnStartPause") as HTMLButtonElement;
+	let rngDst = document.getElementById("rngDistrib") as HTMLInputElement;
+	rngDst.setAttribute("disabled", "true");
     if(btn !== null) {
 		btn.classList.replace("btn-start", "btn-pause");
     	btn.onclick = pauseGame;
@@ -153,6 +155,8 @@ function startGame() : void {
 function pauseGame() : void {
 	game.pauseGame();
 	let btn = document.getElementById("btnStartPause") as HTMLButtonElement;
+	let rngDst = document.getElementById("rngDistrib") as HTMLInputElement;
+	rngDst.removeAttribute("disabled");
 
 	if(btn !== null) {
 		btn.classList.replace("btn-pause", "btn-start");
@@ -165,9 +169,50 @@ function clearField() : void {
 	gameField = new GameField(50, 50, drawField);
 }
 
+function toggleGameRule(ruleId: number) : void {
+
+	switch(ruleId) {
+		case 0: game.setGameRules(GameRules.normal);
+			break;
+		case 1: game.setGameRules(GameRules.inversed);
+			break;
+	}
+}
+
+function toggleEdgeRule(ruleId: number) : void {	
+	
+	switch(ruleId) {
+		case 0: gameField.setFieldCalculation(FieldCalc.overlapingEdges);
+			break;
+		case 1: gameField.setFieldCalculation(FieldCalc.deadEdges);
+			break;
+		case 2: gameField.setFieldCalculation(FieldCalc.livingEdges);
+			break;
+		case 3: gameField.setFieldCalculation(FieldCalc.mirrorEdges);
+			break;
+	}
+}
+
 function changeInterval() : void {
 	let rng = document.getElementById("rngInterval") as HTMLInputElement;
 	game.setInterval(parseInt(rng.value));
+	let lbl = document.getElementById("lblInterval") as HTMLLabelElement;
+	lbl.innerHTML = rng.value;
+
+}
+
+function setDistribDspl(percentageLivingCells: number) : void {
+	let rng = document.getElementById("rngDistrib") as HTMLInputElement;
+	rng.value = percentageLivingCells.toString();
+	let lbl = document.getElementById("lblDistrib") as HTMLLabelElement;
+	lbl.innerHTML = rng.value;
+}
+
+function changeDistrib() : void {
+	let rng = document.getElementById("rngDistrib") as HTMLInputElement;
+	randInit(parseFloat(rng.value));
+	let lbl = document.getElementById("lblDistrib") as HTMLLabelElement;
+	lbl.innerHTML = rng.value;
 }
 
 function drawField(field: GField) : void {
@@ -175,7 +220,7 @@ function drawField(field: GField) : void {
 
 	// Generations-Label setzten
 	let lblGen = document.getElementById("lbl-generation") as HTMLLabelElement;
-	lblGen.textContent = "Generation: " + game.getGeneration();
+	lblGen.textContent = game.getGeneration();
 
 	let count = 0;
 
@@ -199,9 +244,8 @@ function drawField(field: GField) : void {
 		}
 	}
 
-	// Anteil an lebendigen Zellen berechnen
-	let percentageLivingCells = 100 * count / gameField.cols * gameField.rows;
-	// TODO: setzen des Sliders
+	// Anteil an lebendigen Zellen berechnen & im Slider verändern
+	setDistribDspl(100 * count / (gameField.cols * gameField.rows));
 }
 
 function f_pentomino() : void {

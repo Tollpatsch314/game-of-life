@@ -51,7 +51,9 @@ class Game {
 		this._isRunning = false;
 	}
 
-	public setGameRules(func: Function) : void { this._gameRules = func; }
+	public setGameRules(func: Function) : void {
+		this._gameRules = func;
+	}
 
 	public setInterval(interval: number) : void {
 		this._tickInterval = interval;
