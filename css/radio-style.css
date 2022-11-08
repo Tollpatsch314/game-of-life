@@ -1,35 +1,54 @@
 
 /* radio gruppen css für spielregeln und randeinstellungen */
-.toggle-buttons input[type="radio"] {
-	visibility: hidden;
-  
-}
 
 .toggle-buttons label {
-	border: 1px solid #333;
-	padding: 10px;
-	margin: 10px 0;
-	border-radius: 0;
+	
+	margin: 5px;
+	background-color:#c709f1;
+	border-radius:13px;
+	border:none;
+	display:inline-block;
+	cursor:pointer;
+	color:#fff;
+	font-family:'Courier New',Courier,monospace;
+	font-size:1.6rem;
+	font-weight:bold;
+	padding:7px 15px;
+    text-align:center;
+	text-decoration:none;
+    outline:none;
+    box-shadow:3px 6px #999;
 
 }
 
 .toggle-buttons input:checked + label {
-	background: #ebf5d7;
-	color: #5a9900;
+	background: #f16107 !important;
+	color: #ffffff;
 	box-shadow: none;
+	margin: 5px;
+	background-color:#474747;
+	border-radius:13px;
+	border:none;
+	display:inline-block;
+	cursor:pointer;
+	color:#fff;
+	font-family:'Courier New',Courier,monospace;
+	font-size:1.6rem;
+	font-weight:bold;
+	padding:7px 15px;
+    text-align:center;
+	text-decoration:none;
+    outline:none;
+    box-shadow:3px 6px #999;
+	
  
 }
-
-input:hover + label,
-input:focus + label {
-	background: #ffebe6;
+ 
+.toggle-buttons input:hover + label,
+.toggle-buttons input:focus + label {
+	background: #f16107;
 }
 
-.toggle-buttons {
-
-  
-  
-}
 
 .toggle-buttons input {
 	position: absolute;
@@ -37,14 +56,7 @@ input:focus + label {
 	height: 1px;
 	top: 0;
 	left: 0;
+	
 }
 
 
-/* abrunden der enden */
-.toggle-buttons label:first-of-type {
-	border-radius: 8px 0 0 8px;
-}
-
-.toggle-buttons label:last-of-type {
-	border-radius: 0 8px 8px 0;
-}

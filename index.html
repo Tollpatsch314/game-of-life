@@ -23,7 +23,7 @@
 				<tr width="100%">
 					<td width="50%"><input type="button" id="btnStartPause" class="btn-start" onclick="startGame()" value="Start" />
 						<!--<button id="btnStartPause" class="btn-start" onclick="startgame()">Start</button>--></td>
-					<td width="10px"></td>
+					<td width="30px"></td>
 					<td widht="100%"><input type="button" id="btnReset" class="btn-reset" onclick="reset();" value="Reset" disabled="true" /></td>
 				</tr>
 			</table>
@@ -43,13 +43,13 @@
 
 			<div class="toggle-buttons together">
 				<input name="edge-rules" id="edgeRule0" type="radio" onclick="toggleEdgeRule(0);" checked="true" />
-				<label for="edgeRule0">&uuml;berlappend</label>
+				<label for="edgeRule0">Oberfl&auml;che eines Toroids</label>
 				<input name="edge-rules" id="edgeRule1" type="radio" onclick="toggleEdgeRule(1);" />
-				<label for="edgeRule1">immer tot</label>
+				<label for="edgeRule1">Von Tod umringt</label>
 				<input name="edge-rules" id="edgeRule2" type="radio" onclick="toggleEdgeRule(2);" />
-				<label for="edgeRule2">immer lebendig</label>
+				<label for="edgeRule2">Von Leben umringt</label>
 				<input name="edge-rules" id="edgeRule3" type="radio" onclick="toggleEdgeRule(3);" />
-				<label for="edgeRule3">spiegelnd</label>
+				<label for="edgeRule3">Spiegelnd</label>
 			</div>
 
 			<table>
@@ -99,6 +99,8 @@
 				<b>Generation: <label id="lbl-generation"><b>0</b></label></b>
 				<div><canvas id="game-field"></canvas></div>
 			</div>
+			<input type="file" id="uploadfile" onclick="uploadfile()" hidden>
+			<label for="uploadfile" class="btn-upload">Upload</label>
 		</div>
 		
 
