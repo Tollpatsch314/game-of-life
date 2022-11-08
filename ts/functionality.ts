@@ -34,7 +34,7 @@ function loadPage() : void {	// Funktion lädt die Seite und den Canvas, sowie w
 	calcCtxSize();
 
 	// Default Werte					<=========
-	game = new Game(new GameField(200, 200, drawField));
+	game = new Game(new GameField(50, 50, drawField));
 	gameField = game.getGameField();
 	gameField.draw();
 

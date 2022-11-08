@@ -87,15 +87,15 @@ class FieldCalc {
     }
     static deadEdges(f, x, y) {
         let l = f.field?.[x]?.[y];
-        return l !== undefined ? l : 0;
+        return (l !== undefined) ? l : 0;
     }
     static livingEdges(f, x, y) {
         let l = f.field?.[x]?.[y];
-        return l !== undefined ? l : 1;
+        return (l !== undefined) ? l : 1;
     }
     static mirrorEdges(f, x, y) {
         let l = f.field[x][y];
-        return l !== undefined ? l : 1;
+        return (l !== undefined) ? l : 1;
     }
 }
 class GameField {
@@ -158,7 +158,7 @@ function loadPage() {
         ctx.canvas.height = min / 10 * 8.6;
     }
     calcCtxSize();
-    game = new Game(new GameField(200, 200, drawField));
+    game = new Game(new GameField(50, 50, drawField));
     gameField = game.getGameField();
     gameField.draw();
     let btn = document.getElementById("btnReset");
@@ -202,13 +202,13 @@ function rand(min, max) {
 function randInit(percentageLivingCells) {
     let absoluteCount = Math.round((percentageLivingCells / 100) * gameField.rows * gameField.cols);
     absoluteCount -= gameField.getLivingCellCount();
-    let add_val;
+    let addVal;
     if (absoluteCount == 0)
         return;
     else if (absoluteCount > 0)
-        add_val = true;
+        addVal = true;
     else {
-        add_val = false;
+        addVal = false;
         absoluteCount *= -1;
     }
     function genX() { return rand(0, gameField.cols); }
@@ -219,8 +219,8 @@ function randInit(percentageLivingCells) {
         for (let k = 0; k < rand(2, 5); k++) {
             let x = rand(-2, 2) + x_spot, y = rand(-2, 2) + y_spot;
             x = (x + gameField.cols) % gameField.cols, y = (y + gameField.rows) % gameField.rows;
-            if (gameField.getCell(x, y) ? !add_val : add_val) {
-                gameField.setCell(x, y, add_val);
+            if (gameField.getCell(x, y) ? !addVal : addVal) {
+                gameField.setCell(x, y, addVal);
                 n++;
             }
             if (n >= absoluteCount) {

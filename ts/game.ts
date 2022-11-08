@@ -25,8 +25,14 @@ class Game {
 		this._gameRules = GameRules.normal;
 	}
 
+	// Gibt zurück, ob das Spiel gerade am laufen ist
+	// - params: (void)
+	// - ret: (boolean ... ob Spiel läuft)
 	public isGameRunning() : boolean { return this._isRunning; }
 
+	// Gibt zurück ob das Spiel zurücksetzbar ist (also ob es jemals gestartet ist)
+	// - params: (void)
+	// - ret: (boolean ... zrücksetzbar)
 	public isResetable() : boolean { return this._isResetable; }
 
 	public reset() : boolean {
