@@ -107,7 +107,7 @@
 						<td><h4>300</h4></td>
 					</tr>
 				</table>
-			<input type="file" id="uploadfile" onclick="uploadfile()" hidden>
+			<input type="file" id="uploadfile" onchange="uploadfile(this.files[0]);" hidden>
 			<label for="uploadfile" class="btn-upload">Upload</label>
 			<input type="button" id="downloadFile" onclick="downloadConf();" value="Download Konfiguration" />		
 		</div>
