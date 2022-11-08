@@ -123,6 +123,7 @@ function loadPage() {
 function initFromText(txt) {
     let txtArr = txt.split("\n");
     let a_max = parseInt(txtArr[0]);
+    reset();
     gameField = new GameField(a_max, a_max, drawField);
     for (let x = 0; x < a_max; x++) {
         for (let y = 0; y < a_max; y++) {

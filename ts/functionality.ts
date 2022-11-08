@@ -1,7 +1,5 @@
 "use strict";
 
-var ctx: any;
-var canvas: HTMLCanvasElement;
 var game: Game;
 var gameField: GameField;
 
@@ -23,7 +21,7 @@ function getFieldPos(mousePos: {x: number, y: number}) : {x: number, y: number} 
 var mousedown: boolean, mouseIsSetting: boolean, veryFirstInit: boolean = true;
 function loadPage() : void {	// Funktion lädt die Seite und den Canvas, sowie wichtige Variablen
 	canvas = document.getElementById("game-field") as HTMLCanvasElement;
-	ctx = canvas.getContext("2d");
+	ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
 	function calcCtxSize() {	// Berechnung des Context vom Canvas
 		let min = Math.min(window.innerHeight, window.innerWidth);
@@ -83,10 +81,16 @@ function loadPage() : void {	// Funktion lädt die Seite und den Canvas, sowie w
 	}
 }
 
+async function uploadfile(file: File) {
+	let txt: string = await file.text();
+	initFromText(txt);
+}
+
 function initFromText(txt: string) {
 	let txtArr: string[] = txt.split("\n");
 	let a_max: number = parseInt(txtArr[0]);
 	
+	reset();
 	gameField = new GameField(a_max, a_max, drawField);
 
 	for(let x = 0; x < a_max; x++) {
@@ -142,11 +146,6 @@ function downloadConf() {
 	link.setAttribute("download", "ABC.txt");
 	link.click();
 	URL.revokeObjectURL(link.href);
-}
-
-async function uploadfile(file: File) {
-	let txt: string = await file.text();
-	initFromText(txt);
 }
 
 function rand(min: number, max: number) : number {				// generiert Zufallszahl
@@ -274,40 +273,6 @@ function changeDistrib() : void {
 	randInit(parseFloat(rng.value));
 	let lbl = document.getElementById("lblDistrib") as HTMLLabelElement;
 	lbl.innerHTML = rng.value;
-}
-
-function drawField(field: GField) : void {
-	let xCan, yCan, height, width;
-
-	// Generations-Label setzten
-	let lblGen = document.getElementById("lbl-generation") as HTMLLabelElement;
-	lblGen.textContent = game.getGeneration();
-
-	let count = 0;
-
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	for (let x = 0; x < gameField.cols; x++) {
-		for (let y = 0; y < gameField.rows; y++) {
-			xCan = x * ctx.canvas.width / gameField.cols;
-			yCan = y * ctx.canvas.height / gameField.rows;
-			width = ctx.canvas.width / gameField.cols;
-			height =  ctx.canvas.height / gameField.rows
-
-			if (field[x][y] != 0) {
-				ctx.fillRect(xCan, yCan, width, height);
-				count++;
-			}
-			else {
-				ctx.fillStyle = "rgba(0, 0, 0, 0)";	
-				ctx.fillRect(xCan, yCan, width, height)
-				ctx.fillStyle = "rgb(0, 0, 0)";
-				ctx.strokeRect(xCan, yCan, width, height);
-			}
-		}
-	}
-
-	// Anteil an lebendigen Zellen berechnen & im Slider verändern
-	setDistribDspl(100 * count / (gameField.cols * gameField.rows));
 }
 
 function f_pentomino() : void {
