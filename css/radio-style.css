@@ -1,76 +1,23 @@
-.css-checkbox {
-  position: relative;
-  display: block;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  width: 1px;
-  margin: -1px;
-  padding: 0;
-  border: 0;
-}
 
-
-
-.css-checkbox+label {
-  position: relative;
-  font-size: 15px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  height: 36px;
-  color: rgb(0, 0, 0);
-}
-
-.css-checkbox+label::before {
-  content: " ";
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 3px;
-  width: 28px;
-  height: 28px;
-  background-color: rgb(163, 158, 93);
-  border-width: 4px;
-  border-style: solid;
-  border-color: rgb(163, 158, 93);
-  border-radius: 50px;
-  box-shadow: rgba(0, 0, 0, 0.1) 4px 3px 0px 0px;
-}
-
-.css-checkbox:checked+label::after {
-  content: " ";
-  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBmaWxsPSIjZGJkMDMxIiBkPSJNNTEyIDI1NkM1MTIgMzk3LjQgMzk3LjQgNTEyIDI1NiA1MTJDMTE0LjYgNTEyIDAgMzk3LjQgMCAyNTZDMCAxMTQuNiAxMTQuNiAwIDI1NiAwQzM5Ny40IDAgNTEyIDExNC42IDUxMiAyNTZ6Ii8+PC9zdmc+");
-  background-repeat: no-repeat;
-  background-size: 15px 15px;
-  background-position: center center;
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-left: 0px;
-  left: 0px;
-  top: 0px;
-  text-align: center;
-  background-color: transparent;
-  font-size: 10px;
-  height: 36px;
-  width: 36px;
-}
 /* radio gruppen css für spielregeln und randeinstellungen */
 .toggle-buttons input[type="radio"] {
 	visibility: hidden;
+  
 }
 
 .toggle-buttons label {
 	border: 1px solid #333;
-	border-radius: 0.5em;
-	padding: 0.5em;
+	padding: 10px;
+	margin: 10px 0;
+	border-radius: 0;
+
 }
 
 .toggle-buttons input:checked + label {
 	background: #ebf5d7;
 	color: #5a9900;
 	box-shadow: none;
+ 
 }
 
 input:hover + label,
@@ -78,11 +25,13 @@ input:focus + label {
 	background: #ffebe6;
 }
 
-.together {
-	position: relative;
+.toggle-buttons {
+
+  
+  
 }
 
-.together input {
+.toggle-buttons input {
 	position: absolute;
 	width: 1px;
 	height: 1px;
@@ -90,15 +39,12 @@ input:focus + label {
 	left: 0;
 }
 
-.together label {
-	margin: 0.5em 0;
-	border-radius: 0;
-}
+
 /* abrunden der enden */
-.together label:first-of-type {
-	border-radius: 0.5em 0 0 0.5em;
+.toggle-buttons label:first-of-type {
+	border-radius: 8px 0 0 8px;
 }
 
-.together label:last-of-type {
-	border-radius: 0 0.5em 0.5em 0;
+.toggle-buttons label:last-of-type {
+	border-radius: 0 8px 8px 0;
 }

@@ -71,9 +71,7 @@ input[type=button]:not(:disabled):active {
 	grid-area:header;
 }
   
-.footer {
-	grid-area:footer;
-}
+
 
 #game-field {
   display:grid;
@@ -86,6 +84,7 @@ input[type=button]:not(:disabled):active {
 
 
 #helpinfobox {
+	
   display:grid;
   grid-template-columns:auto auto;
 }
@@ -104,10 +103,52 @@ input[type=button]:not(:disabled):active {
 .btn-pause {
 	background-color:orange !important; width: 100%;}
 .btn-reset {
-	background-color:crimson !important; width: 100%;}
+	background-color:crimson !important; width: 100%; margin-left: -20px;}
 
 #btn-help {
 	float: right;
 	margin: 20px;
 
 }
+
+.btn-presets {
+	background-color: #3714d1 !important;
+}
+
+/* dropdownbox */
+
+.presetbox:hover .presets {
+	display: block;
+	bottom: 100%;
+}
+
+.presetbox {
+	position: relative;
+	display: inline-block;
+
+}
+
+.presets {
+	display: none;
+	position: absolute;
+	background-color: #5858e2;
+	min-width: 160px;
+	box-shadow:3px 6px #999;
+	padding: 12px 16px;
+	z-index: 1;
+	border-radius: 7px;
+}
+
+.presets a:hover { 
+	background-color: #7878e2;
+	border-radius: 7px;
+}
+
+
+.presets a {
+	color: black;
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+  }
+  

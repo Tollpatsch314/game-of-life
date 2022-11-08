@@ -81,8 +81,17 @@
 			
 			<br /><br />
 			<input type="button" id="btn-help" onclick="location.href='help.html';" value="Hilfe" />
-			<br /><br />
-			<input type="file" id="uploadFile" onchange="uploadFile();" />
+			
+			<div class="presetbox">
+				<input type="button" id="btndropdown" class="btn-presets" onclick="" value="Presets" />
+				<div class="presets">
+				
+					<a href="#">Link 1</a>
+   					<a href="#">Link 2</a>
+   					<a href="#">Link 3</a>
+				</div>
+	
+			</div>
 		</div>
 
 		<div class="game-stage">
@@ -91,6 +100,8 @@
 				<div><canvas id="game-field"></canvas></div>
 			</div>
 		</div>
+		
+
 	</div>
 
 	<script>loadPage();</script>
