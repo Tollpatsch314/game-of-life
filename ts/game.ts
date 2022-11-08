@@ -1,5 +1,6 @@
 "use strict";
 
+// Klasse an vordefinierten Spielregeln für die Game-Klase
 class GameRules {
 	public static normal(neighborCount: number, cellLife: boolean) : boolean {			// Spielregeln für das "normale" Game of Life
 		return neighborCount == 3 || (neighborCount == 2 && cellLife);
@@ -11,15 +12,18 @@ class GameRules {
 }
 
 class Game {
-	private _field: GameField;
-	private _timerID: number = 0;
-	private _tickInterval: number = 700;     // time in ms (min. 20 ms)
-	private _isRunning: boolean = false;
-	private _isResetable: boolean = false;
-	private _gameRules: Function;
-	private _generation: number = 0;
-	private _t_0: number = 0;
+	private _field: GameField;					// Speichert das Spielfeld
+	private _timerID: number = 0;				// Id des Timers zum Aufruf in einen definierten Zeitintervall
+	private _tickInterval: number = 700;		// Aufrufintervall in ms (min. 20 ms)
+	private _isRunning: boolean = false;		// Speichert ob das Spiel läuft
+	private _isResetable: boolean = false;		// Speichert ob das Spiel jemals gestartet wurde
+	private _gameRules: Function;				// Funktionspointer zur "Spielregelfunktion"
+	private _generation: number = 0;			// Iterator der aktuellen Generation
+	private _t_0: number = 0;					// t_0 = Startzeitpunkt der aktuellen Generationsiteration (wird zur Berechung des Intervalls benötigt)
 
+	// Konstruktor, setzt Spielregeln auf "normal", brauch ein Spielfeld
+	// - params: (gameField: GameField ... Spielfeld (kann in Größe und berechnungsregeln vordefiniert sein))
+	// - ret: Objekt der Klasse Game
 	public constructor(gameField: GameField) {
 		this._field = gameField;
 		this._gameRules = GameRules.normal;
@@ -32,9 +36,12 @@ class Game {
 
 	// Gibt zurück ob das Spiel zurücksetzbar ist (also ob es jemals gestartet ist)
 	// - params: (void)
-	// - ret: (boolean ... zrücksetzbar)
+	// - ret: (boolean ... Zurücksetzbarkeit)
 	public isResetable() : boolean { return this._isResetable; }
 
+	// Setzt das gesamte Spielfeld zurück, stopt ggf. das Spiel
+	// - params: (void)
+	// - ret: (boolean ... Erfolgsstatus)
 	public reset() : boolean {
 		if(!this._isResetable) return false;
 		this.pauseGame();
@@ -43,6 +50,9 @@ class Game {
 		return true;
 	}
 
+	// Startet das Spiel, setzt erforderliche Variablen dafür
+	// - params: (void)
+	// - ret: (void)
 	public startGame() : void {
 		if(!this._isRunning) {
 			this._isRunning = true;
@@ -52,15 +62,22 @@ class Game {
 		}
 	}
 
+	// Pausiert das Spiel
+	// - params: (void)
+	// - ret: (void)
 	public pauseGame() : void {
 		window.clearInterval(this._timerID);
 		this._isRunning = false;
 	}
 
-	public setGameRules(func: Function) : void {
-		this._gameRules = func;
-	}
+	// Ermöglicht das setzen / ändern von den Spielregeln (der Berechnung von der Lebendigkeit der Zellen der nächsten Generation)
+	// - params: (func. Function (neighborCount: number, cellLife: boolean) => {  }; neighborCount ... Anzahl der Nachbarn, cellLife ... Anktuelle Zelle lebt)
+	// - ret: (void)
+	public setGameRules(func: Function) : void { this._gameRules = func; }
 
+	// Ändert das Intervall in welchen neue Generationen erzeugt werden
+	// - params: (interval: number ... Intervall in ms, min 20 ms)
+	// - ret: (void)
 	public setInterval(interval: number) : void {
 		this._tickInterval = interval;
 
@@ -71,12 +88,24 @@ class Game {
 		}
 	}
 
+	// Gibt ein Objekt der Spielffeldklassse zurück (bzw. Pointer)
+	// - params: (void)
+	// - ret: (GameField ... der Pointer)
 	public getGameField() : GameField { return this._field as GameField; }
 
+	// Gibt das wirkliche Feld (Array<Uint8array>) zurück (bzw. Pointer)
+	// - params: (void)
+	// - ret: (GField ... Array<Uint8array> => der Pointers)
 	public getGArray() : GField { return this._field.field as GField; }
 
+	// Gibt den aktuellen Generationsiterator (als string) zurück
+	// - params: (void)
+	// - ret: (string ... der String)
 	public getGeneration() : string { return this._generation.toString(); }
 
+	// Wird (so das Spiel läuft) aller 5 ms aufgerufen. Testet ob Wartezeit erreicht wurde und führt ggf. die Berechnung der Folgegeneration aus
+	// - params: (void)
+	// - ret: (void)
 	public gameIteration() : void {
 		if(performance.now() - this._t_0 < this._tickInterval)		// => delta_t < festgelegtes Interval ?
 			return;													//		==> return
@@ -88,14 +117,17 @@ class Game {
 		this._t_0 = performance.now();
 	}
 
+	// Generiert das Feld (Array!) der Folgegeneration.
+	// - params: (void)
+	// - ret: (GField ... das Feld)
 	private getNextGen() : GField {									// Erzeugt die nächste Generation
 		let nextGen: GField = makeGField(this._field.cols, this._field.rows);
 		let neighborCount: Function = this._field.getNeigborCount.bind(this._field);
 	
-		for(let x = 0; x < this._field.cols; x++) {
-			for(let y = 0; y < this._field.rows; y++) {
-				if(this._gameRules(neighborCount(x, y), this._field.getCell(x, y))) {							
-					nextGen[x][y] = 1;
+		for(let x = 0; x < this._field.cols; x++) {											// bestimmt ob diese Zelle in der nächsten Generation tod/lebendig ist, das wird durch
+			for(let y = 0; y < this._field.rows; y++) {										// 	- die Anzahl der Nachbarn
+				if(this._gameRules(neighborCount(x, y), this._field.getCell(x, y))) {		//	- die eigene "Lebendigkeit"
+					nextGen[x][y] = 1;														// definiert
 				}
 			}
 		}
@@ -103,8 +135,3 @@ class Game {
 		return nextGen;
 	}
 }
-
-// bestimmt ob diese Zelle in der nächsten Generation tod/lebendig ist, das wird durch
-// 	- die Anzahl der Nachbarn
-//	- die eigene "Lebendigkeit"
-// bestimmt

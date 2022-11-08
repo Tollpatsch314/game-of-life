@@ -32,9 +32,9 @@
 			<h2>Spielregeln</h2>
 		
 			<div class="toggle-buttons together">
-				<input name="game-rules" id="gameRule0" type="radio" onclick="toggleGameRule(0);" checked="true" />
+				<input name="game-rules" id="gameRule0" type="radio" onclick="toggleGameRule(GameRules.normal);" checked="true" />
 				<label for="gameRule0">Klassisch</label>
-				<input name="game-rules" id="gameRule1" type="radio" onclick="toggleGameRule(1);" />
+				<input name="game-rules" id="gameRule1" type="radio" onclick="toggleGameRule(GameRules.inversed);" />
 				<label for="gameRule1">Invertiert</label>		
 			</div>
 
@@ -42,13 +42,13 @@
 			<h2>Randregeln</h2>	
 
 			<div class="toggle-buttons together">
-				<input name="edge-rules" id="edgeRule0" type="radio" onclick="toggleEdgeRule(0);" checked="true" />
-				<label for="edgeRule0">Oberfl&auml;che eines Toroids</label>
-				<input name="edge-rules" id="edgeRule1" type="radio" onclick="toggleEdgeRule(1);" />
+				<input name="edge-rules" id="edgeRule0" type="radio" onclick="toggleEdgeRule(FieldCalc.overlapingEdges);" checked="true" />
+				<label for="edgeRule0"Oberfl&auml;che eines Toroids</label>
+				<input name="edge-rules" id="edgeRule1" type="radio" onclick="toggleEdgeRule(FieldCalc.deadEdges);" />
 				<label for="edgeRule1">Von Tod umringt</label>
-				<input name="edge-rules" id="edgeRule2" type="radio" onclick="toggleEdgeRule(2);" />
+				<input name="edge-rules" id="edgeRule2" type="radio" onclick="toggleEdgeRule(FieldCalc.livingEdges);" />
 				<label for="edgeRule2">Von Leben umringt</label>
-				<input name="edge-rules" id="edgeRule3" type="radio" onclick="toggleEdgeRule(3);" />
+				<input name="edge-rules" id="edgeRule3" type="radio" onclick="toggleEdgeRule(FieldCalc.mirrorEdges);" />
 				<label for="edgeRule3">Spiegelnd</label>
 			</div>
 
@@ -81,6 +81,7 @@
 			
 			<br /><br />
 			<input type="button" id="btn-help" onclick="location.href='help.html';" value="Hilfe" />
+			<input type="file" id="uploadFile" />
 			
 			<div class="presetbox">
 				<input type="button" id="btndropdown" class="btn-presets" onclick="" value="Presets" />

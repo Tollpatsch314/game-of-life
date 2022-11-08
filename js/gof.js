@@ -40,9 +40,7 @@ class Game {
         window.clearInterval(this._timerID);
         this._isRunning = false;
     }
-    setGameRules(func) {
-        this._gameRules = func;
-    }
+    setGameRules(func) { this._gameRules = func; }
     setInterval(interval) {
         this._tickInterval = interval;
         if (this._isRunning) {
@@ -108,6 +106,7 @@ class GameField {
     }
     genField() { this.field = makeGField(this.cols, this.rows); }
     setFieldCalculation(calcFunc) { this._fieldCalcFunc = calcFunc; }
+    getFieldCalculation() { return this._fieldCalcFunc; }
     getCell(x, y) { return this.field[x][y] != 0; }
     setCell(x, y, alive) { this.field[x][y] = alive ? 1 : 0; }
     draw() { this._drawFunc(this.field); }
@@ -158,12 +157,11 @@ function loadPage() {
         ctx.canvas.height = min / 10 * 8.6;
     }
     calcCtxSize();
-    game = new Game(new GameField(50, 50, drawField));
+    game = new Game(new GameField(50, 100, drawField));
     gameField = game.getGameField();
     gameField.draw();
     let btn = document.getElementById("btnReset");
     btn.setAttribute("disabled", "true");
-    pauseGame();
     if (veryFirstInit) {
         function drawEvent(evt) {
             var pos = getFieldPos(getMousePos(canvas, evt));
@@ -232,7 +230,15 @@ function randInit(percentageLivingCells) {
 }
 function reset() {
     game.reset();
-    loadPage();
+    let fieldRule = gameField.getFieldCalculation();
+    gameField = new GameField(gameField.cols, gameField.rows, drawField);
+    gameField.setFieldCalculation(fieldRule);
+    gameField.draw();
+    let btn = document.getElementById("btnReset");
+    btn.setAttribute("disabled", "true");
+    pauseGame();
+}
+function uploadFile() {
 }
 function enableReset() {
     if (game.isResetable()) {
@@ -266,31 +272,11 @@ function pauseGame() {
 function clearField() {
     gameField = new GameField(50, 50, drawField);
 }
-function toggleGameRule(ruleId) {
-    switch (ruleId) {
-        case 0:
-            game.setGameRules(GameRules.normal);
-            break;
-        case 1:
-            game.setGameRules(GameRules.inversed);
-            break;
-    }
+function toggleGameRule(ruleFunc) {
+    game.setGameRules(ruleFunc);
 }
-function toggleEdgeRule(ruleId) {
-    switch (ruleId) {
-        case 0:
-            gameField.setFieldCalculation(FieldCalc.overlapingEdges);
-            break;
-        case 1:
-            gameField.setFieldCalculation(FieldCalc.deadEdges);
-            break;
-        case 2:
-            gameField.setFieldCalculation(FieldCalc.livingEdges);
-            break;
-        case 3:
-            gameField.setFieldCalculation(FieldCalc.mirrorEdges);
-            break;
-    }
+function toggleEdgeRule(ruleFunc) {
+    gameField.setFieldCalculation(ruleFunc);
 }
 function changeInterval() {
     let rng = document.getElementById("rngInterval");
@@ -311,25 +297,26 @@ function changeDistrib() {
     lbl.innerHTML = rng.value;
 }
 function drawField(field) {
-    let xCan, yCan, width;
+    let xCan, yCan, height, width;
     let lblGen = document.getElementById("lbl-generation");
     lblGen.textContent = game.getGeneration();
     let count = 0;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (let x = 0; x < gameField.cols; x++) {
         for (let y = 0; y < gameField.rows; y++) {
-            xCan = x * ctx.canvas.height / gameField.cols;
-            yCan = y * ctx.canvas.height / gameField.cols;
-            width = ctx.canvas.height / gameField.cols;
+            xCan = x * ctx.canvas.width / gameField.cols;
+            yCan = y * ctx.canvas.height / gameField.rows;
+            width = ctx.canvas.width / gameField.cols;
+            height = ctx.canvas.height / gameField.rows;
             if (field[x][y] != 0) {
-                ctx.fillRect(xCan, yCan, width, width);
+                ctx.fillRect(xCan, yCan, width, height);
                 count++;
             }
             else {
                 ctx.fillStyle = "rgba(0, 0, 0, 0)";
-                ctx.fillRect(xCan, yCan, width, width);
+                ctx.fillRect(xCan, yCan, width, height);
                 ctx.fillStyle = "rgb(0, 0, 0)";
-                ctx.strokeRect(xCan, yCan, width, width);
+                ctx.strokeRect(xCan, yCan, width, height);
             }
         }
     }
