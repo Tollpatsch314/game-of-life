@@ -228,8 +228,6 @@ function reset() {
     btn.setAttribute("disabled", "true");
     pauseGame();
 }
-function uploadFile() {
-}
 function enableReset() {
     if (game.isResetable()) {
         let btn = document.getElementById("btnReset");

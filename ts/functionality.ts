@@ -118,8 +118,8 @@ function downloadConf() {
 	let txt: string = gameField.cols.toString() + "\n";
 
 	switch(game.getGameRuleFunc()) {
-		case GameRules.normal:		txt += "0"; break;
-		case GameRules.inversed:	txt += "1"; break;
+		case GameRules.normal:			txt += "0"; break;
+		case GameRules.inversed:		txt += "1"; break;
 	}
 
 	switch(gameField.getFieldCalculation()) {
@@ -203,10 +203,6 @@ function reset() : void {
 	btn.setAttribute("disabled", "true");
 
 	pauseGame();	// Pause => Start
-}
-
-function uploadFile() : void {
-	//let upld = document.getElementById("uploadFile");
 }
 
 function enableReset() : void {
