@@ -98,6 +98,11 @@ class Game {
 	// - ret: (GField ... Array<Uint8array> => der Pointers)
 	public getGArray() : GField { return this._field.field as GField; }
 
+	// Gibt die Funktion zur Berechnung der Lebendigkeit der Zellen der nächsten Generation zurück
+	// - params: (void)
+	// - ret: (Function ... (neighborCount: number, cellLife: boolean) => {  }; neighborCount ... Anzahl der Nachbarn, cellLife ... Anktuelle Zelle lebt)
+	public getGameRuleFunc() : Function { return this._gameRules as Function; }
+
 	// Gibt den aktuellen Generationsiterator (als string) zurück
 	// - params: (void)
 	// - ret: (string ... der String)

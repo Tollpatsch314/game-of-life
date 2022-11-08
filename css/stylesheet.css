@@ -21,12 +21,10 @@ input[type=button] {
 	font-size:1.6rem;
 	font-weight:bold;
 	padding:12px 23px;
-    text-align:center;
+  text-align:center;
 	text-decoration:none;
-    outline:none;
-    box-shadow:3px 6px #999;
-	
-
+  outline:none;
+  box-shadow:3px 6px #999;
 }
 input:disabled, input[disabled] {
   background-color:#666!important;

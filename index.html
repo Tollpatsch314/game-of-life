@@ -32,9 +32,9 @@
 			<h2>Spielregeln</h2>
 		
 			<div class="toggle-buttons together">
-				<input name="game-rules" id="gameRule0" type="radio" onclick="toggleGameRule(GameRules.normal);" checked="true" />
+				<input name="game-rules" id="gameRule0" type="radio" onclick="toggleGameRule(0);" checked="true" />
 				<label for="gameRule0">Klassisch</label>
-				<input name="game-rules" id="gameRule1" type="radio" onclick="toggleGameRule(GameRules.inversed);" />
+				<input name="game-rules" id="gameRule1" type="radio" onclick="toggleGameRule(1);" />
 				<label for="gameRule1">Invertiert</label>		
 			</div>
 
@@ -42,13 +42,13 @@
 			<h2>Randregeln</h2>	
 
 			<div class="toggle-buttons together">
-				<input name="edge-rules" id="edgeRule0" type="radio" onclick="toggleEdgeRule(FieldCalc.overlapingEdges);" checked="true" />
+				<input name="edge-rules" id="edgeRule0" type="radio" onclick="toggleEdgeRule(0);" checked="true" />
 				<label for="edgeRule0">Oberfl&auml;che eines Toroids</label>
-				<input name="edge-rules" id="edgeRule1" type="radio" onclick="toggleEdgeRule(FieldCalc.deadEdges);" />
-				<label for="edgeRule1">Von Tod umringt</label>
-				<input name="edge-rules" id="edgeRule2" type="radio" onclick="toggleEdgeRule(FieldCalc.livingEdges);" />
+				<input name="edge-rules" id="edgeRule1" type="radio" onclick="toggleEdgeRule(1);" />
+				<label for="edgeRule1">Vom Tod umringt</label>
+				<input name="edge-rules" id="edgeRule2" type="radio" onclick="toggleEdgeRule(2);" />
 				<label for="edgeRule2">Von Leben umringt</label>
-				<input name="edge-rules" id="edgeRule3" type="radio" onclick="toggleEdgeRule(FieldCalc.mirrorEdges);" />
+				<input name="edge-rules" id="edgeRule3" type="radio" onclick="toggleEdgeRule(3);" />
 				<label for="edgeRule3">Spiegelnd</label>
 			</div>
 
@@ -99,8 +99,9 @@
 				<b>Generation: <label id="lbl-generation"><b>0</b></label></b>
 				<div><canvas id="game-field"></canvas></div>
 			</div>
-			<input type="file" id="uploadfile" onclick="uploadfile()" hidden>
+			<input type="file" id="uploadfile" onchange="uploadfile(this.files[0]);" hidden>
 			<label for="uploadfile" class="btn-upload">Upload</label>
+			<input type="button" id="downloadFile" onclick="downloadConf();" value="Download Konfiguration" />
 		</div>
 		
 

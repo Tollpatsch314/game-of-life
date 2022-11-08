@@ -83,7 +83,7 @@ function loadPage() {
         ctx.canvas.height = min / 10 * 8.6;
     }
     calcCtxSize();
-    game = new Game(new GameField(50, 100, drawField));
+    game = new Game(new GameField(50, 50, drawField));
     gameField = game.getGameField();
     gameField.draw();
     let btn = document.getElementById("btnReset");
@@ -119,6 +119,72 @@ function loadPage() {
         veryFirstInit = false;
         f_pentomino();
     }
+}
+function initFromText(txt) {
+    let txtArr = txt.split("\n");
+    let a_max = parseInt(txtArr[0]);
+    gameField = new GameField(a_max, a_max, drawField);
+    for (let x = 0; x < a_max; x++) {
+        for (let y = 0; y < a_max; y++) {
+            gameField.setCell(x, y, txtArr[x + 2][y] == '1');
+        }
+    }
+    toggleGameRule(parseInt(txtArr[1][0]));
+    toggleEdgeRule(parseInt(txtArr[1][1]));
+    function setRadio(name, max, ruleId) {
+        let n = parseInt(ruleId);
+        for (let i = 0; i < max; i++) {
+            document.getElementById(name + i.toString())?.removeAttribute("checked");
+            if (n == i)
+                document.getElementById(name + i.toString())?.setAttribute("checked", "true");
+        }
+    }
+    setRadio("gameRule", 2, txtArr[1][0]);
+    setRadio("edgeRule", 4, txtArr[1][1]);
+    game = new Game(gameField);
+    gameField.draw();
+}
+function downloadConf() {
+    pauseGame();
+    let txt = gameField.cols.toString() + "\n";
+    switch (game.getGameRuleFunc()) {
+        case GameRules.normal:
+            txt += "0";
+            break;
+        case GameRules.inversed:
+            txt += "1";
+            break;
+    }
+    switch (gameField.getFieldCalculation()) {
+        case FieldCalc.overlapingEdges:
+            txt += "0";
+            break;
+        case FieldCalc.deadEdges:
+            txt += "1";
+            break;
+        case FieldCalc.livingEdges:
+            txt += "2";
+            break;
+        case FieldCalc.mirrorEdges:
+            txt += "3";
+            break;
+    }
+    for (let x = 0; x < gameField.cols; x++) {
+        txt += "\n";
+        for (let y = 0; y < gameField.rows; y++) {
+            txt += gameField.getCell(x, y) ? "1" : "0";
+        }
+    }
+    let file = new Blob([txt], { type: "text/plain" });
+    let link = document.createElement("a");
+    link.setAttribute("href", URL.createObjectURL(file));
+    link.setAttribute("download", "ABC.txt");
+    link.click();
+    URL.revokeObjectURL(link.href);
+}
+async function uploadfile(file) {
+    let txt = await file.text();
+    initFromText(txt);
 }
 function rand(min, max) {
     return Math.round(Math.random() * (max - min + 1) - 0.5) + min;
@@ -156,9 +222,7 @@ function randInit(percentageLivingCells) {
 }
 function reset() {
     game.reset();
-    let fieldRule = gameField.getFieldCalculation();
-    gameField = new GameField(gameField.cols, gameField.rows, drawField);
-    gameField.setFieldCalculation(fieldRule);
+    gameField = game.getGameField();
     gameField.draw();
     let btn = document.getElementById("btnReset");
     btn.setAttribute("disabled", "true");
@@ -195,14 +259,31 @@ function pauseGame() {
         btn.value = "Start";
     }
 }
-function clearField() {
-    gameField = new GameField(50, 50, drawField);
+function toggleGameRule(ruleId) {
+    switch (ruleId) {
+        case 0:
+            game.setGameRules(GameRules.normal);
+            break;
+        case 1:
+            game.setGameRules(GameRules.inversed);
+            break;
+    }
 }
-function toggleGameRule(ruleFunc) {
-    game.setGameRules(ruleFunc);
-}
-function toggleEdgeRule(ruleFunc) {
-    gameField.setFieldCalculation(ruleFunc);
+function toggleEdgeRule(ruleId) {
+    switch (ruleId) {
+        case 0:
+            gameField.setFieldCalculation(FieldCalc.overlapingEdges);
+            break;
+        case 1:
+            gameField.setFieldCalculation(FieldCalc.deadEdges);
+            break;
+        case 2:
+            gameField.setFieldCalculation(FieldCalc.livingEdges);
+            break;
+        case 3:
+            gameField.setFieldCalculation(FieldCalc.mirrorEdges);
+            break;
+    }
 }
 function changeInterval() {
     let rng = document.getElementById("rngInterval");
@@ -308,6 +389,7 @@ class Game {
     }
     getGameField() { return this._field; }
     getGArray() { return this._field.field; }
+    getGameRuleFunc() { return this._gameRules; }
     getGeneration() { return this._generation.toString(); }
     gameIteration() {
         if (performance.now() - this._t_0 < this._tickInterval)

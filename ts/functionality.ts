@@ -34,7 +34,7 @@ function loadPage() : void {	// Funktion lädt die Seite und den Canvas, sowie w
 	calcCtxSize();
 
 	// Default Werte					<=========
-	game = new Game(new GameField(50, 100, drawField));
+	game = new Game(new GameField(50, 50, drawField));
 	gameField = game.getGameField();
 	gameField.draw();
 
@@ -83,6 +83,72 @@ function loadPage() : void {	// Funktion lädt die Seite und den Canvas, sowie w
 	}
 }
 
+function initFromText(txt: string) {
+	let txtArr: string[] = txt.split("\n");
+	let a_max: number = parseInt(txtArr[0]);
+	
+	gameField = new GameField(a_max, a_max, drawField);
+
+	for(let x = 0; x < a_max; x++) {
+		for(let y = 0; y < a_max; y++) {
+			gameField.setCell(x, y, txtArr[x + 2][y] == '1');
+		}
+	}
+	
+	toggleGameRule(parseInt(txtArr[1][0]));
+	toggleEdgeRule(parseInt(txtArr[1][1]));
+
+	function setRadio(name: string, max: number, ruleId: string) {
+		let n = parseInt(ruleId);
+		for(let i = 0; i < max; i++) {
+			document.getElementById(name + i.toString())?.removeAttribute("checked");
+			if(n == i) document.getElementById(name + i.toString())?.setAttribute("checked", "true");
+		}
+	}
+
+	setRadio("gameRule", 2, txtArr[1][0]);
+	setRadio("edgeRule", 4, txtArr[1][1]);
+
+	game = new Game(gameField);
+	gameField.draw();
+}
+
+function downloadConf() {
+	pauseGame();
+	let txt: string = gameField.cols.toString() + "\n";
+
+	switch(game.getGameRuleFunc()) {
+		case GameRules.normal:		txt += "0"; break;
+		case GameRules.inversed:	txt += "1"; break;
+	}
+
+	switch(gameField.getFieldCalculation()) {
+		case FieldCalc.overlapingEdges:	txt += "0"; break;
+		case FieldCalc.deadEdges:		txt += "1"; break;
+		case FieldCalc.livingEdges:		txt += "2"; break;
+		case FieldCalc.mirrorEdges:		txt += "3"; break;
+	}
+
+	for(let x = 0; x < gameField.cols; x++) {
+		txt += "\n";
+		for(let y = 0; y < gameField.rows; y++) {
+			txt += gameField.getCell(x, y) ? "1" : "0";
+		}
+	}
+
+	let file = new Blob([txt], {type: "text/plain"});
+	let link = document.createElement("a") as any;
+	link.setAttribute("href", URL.createObjectURL(file));
+	link.setAttribute("download", "ABC.txt");
+	link.click();
+	URL.revokeObjectURL(link.href);
+}
+
+async function uploadfile(file: File) {
+	let txt: string = await file.text();
+	initFromText(txt);
+}
+
 function rand(min: number, max: number) : number {				// generiert Zufallszahl
 	return Math.round(Math.random() * (max - min + 1) - 0.5) + min;
 }
@@ -105,16 +171,16 @@ function randInit(percentageLivingCells: number) : void {		// zufällige Befüll
 	function genX() : number { return rand(0, gameField.cols); }	// generiert eine zufällige Ordinate
 	function genY() : number { return rand(0, gameField.rows); }	// generiert eine zufällige Abszisse
 
-	let n = 0;													// Zähler für Felder
+	let n = 0;														// Zähler für Felder
 
 	while(true) {
-		let x_spot: number = genX(), y_spot: number = genY();	// generiere Koordinaten eines "Spots"
+		let x_spot: number = genX(), y_spot: number = genY();		// generiere Koordinaten eines "Spots"
 
 		for(let k = 0; k < rand(2, 5); k++) {
 			let x: number = rand(-2, 2) + x_spot, y: number = rand(-2, 2) + y_spot;
 			x = (x + gameField.cols) % gameField.cols, y = (y + gameField.rows) % gameField.rows;
 
-			if(gameField.getCell(x, y) ? !addVal : addVal)  {					// leider gibt es kein XOR in JS ):
+			if(gameField.getCell(x, y) ? !addVal : addVal)  {		// leider gibt es kein XOR in JS ):
 				gameField.setCell(x, y, addVal);
 				n++;
 			}
@@ -129,9 +195,7 @@ function randInit(percentageLivingCells: number) : void {		// zufällige Befüll
 
 function reset() : void {
 	game.reset();
-	let fieldRule: Function = gameField.getFieldCalculation();
-	gameField = new GameField(gameField.cols, gameField.rows, drawField);
-	gameField.setFieldCalculation(fieldRule);
+	gameField = game.getGameField();
 	gameField.draw();
 
 	// Deaktivere Reset
@@ -178,16 +242,20 @@ function pauseGame() : void {
 	}
 }
 
-function clearField() : void {
-	gameField = new GameField(50, 50, drawField);
+function toggleGameRule(ruleId: number) : void {
+	switch(ruleId) {
+		case 0: game.setGameRules(GameRules.normal);	break;
+		case 1: game.setGameRules(GameRules.inversed);	break;
+	}
 }
 
-function toggleGameRule(ruleFunc: Function) : void {
-	game.setGameRules(ruleFunc);
-}
-
-function toggleEdgeRule(ruleFunc: Function) : void {	
-	gameField.setFieldCalculation(ruleFunc);
+function toggleEdgeRule(ruleId: number) : void {	
+	switch(ruleId) {
+		case 0: gameField.setFieldCalculation(FieldCalc.overlapingEdges);	break;
+		case 1: gameField.setFieldCalculation(FieldCalc.deadEdges);			break;
+		case 2: gameField.setFieldCalculation(FieldCalc.livingEdges);		break;
+		case 3: gameField.setFieldCalculation(FieldCalc.mirrorEdges);		break;
+	}
 }
 
 function changeInterval() : void {
