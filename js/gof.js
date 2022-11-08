@@ -1,78 +1,4 @@
 "use strict";
-class GameRules {
-    static normal(neighborCount, cellLife) {
-        return neighborCount == 3 || (neighborCount == 2 && cellLife);
-    }
-    static inversed(neighborCount, cellLife) {
-        return neighborCount != 5 && (neighborCount != 6 || cellLife);
-    }
-}
-class Game {
-    constructor(gameField) {
-        this._timerID = 0;
-        this._tickInterval = 700;
-        this._isRunning = false;
-        this._isResetable = false;
-        this._generation = 0;
-        this._t_0 = 0;
-        this._field = gameField;
-        this._gameRules = GameRules.normal;
-    }
-    isGameRunning() { return this._isRunning; }
-    isResetable() { return this._isResetable; }
-    reset() {
-        if (!this._isResetable)
-            return false;
-        this.pauseGame();
-        this._generation = 0;
-        this._field.genField();
-        return true;
-    }
-    startGame() {
-        if (!this._isRunning) {
-            this._isRunning = true;
-            this._isResetable = true;
-            var t = this;
-            this._timerID = window.setInterval(t.gameIteration.bind(t), 5);
-        }
-    }
-    pauseGame() {
-        window.clearInterval(this._timerID);
-        this._isRunning = false;
-    }
-    setGameRules(func) { this._gameRules = func; }
-    setInterval(interval) {
-        this._tickInterval = interval;
-        if (this._isRunning) {
-            window.clearInterval(this._timerID);
-            var t = this;
-            this._timerID = window.setInterval(t.gameIteration.bind(t), 5);
-        }
-    }
-    getGameField() { return this._field; }
-    getGArray() { return this._field.field; }
-    getGeneration() { return this._generation.toString(); }
-    gameIteration() {
-        if (performance.now() - this._t_0 < this._tickInterval)
-            return;
-        this._generation++;
-        this._field.field = this.getNextGen();
-        this._field.draw();
-        this._t_0 = performance.now();
-    }
-    getNextGen() {
-        let nextGen = makeGField(this._field.cols, this._field.rows);
-        let neighborCount = this._field.getNeigborCount.bind(this._field);
-        for (let x = 0; x < this._field.cols; x++) {
-            for (let y = 0; y < this._field.rows; y++) {
-                if (this._gameRules(neighborCount(x, y), this._field.getCell(x, y))) {
-                    nextGen[x][y] = 1;
-                }
-            }
-        }
-        return nextGen;
-    }
-}
 function makeGField(cols, rows) {
     let arr = new Array(cols);
     for (let x = 0; x < cols; x++)
@@ -329,5 +255,79 @@ function f_pentomino() {
     gameField.setCell(26, 25, true);
     gameField.setCell(24, 26, true);
     gameField.draw();
+}
+class GameRules {
+    static normal(neighborCount, cellLife) {
+        return neighborCount == 3 || (neighborCount == 2 && cellLife);
+    }
+    static inversed(neighborCount, cellLife) {
+        return neighborCount != 5 && (neighborCount != 6 || cellLife);
+    }
+}
+class Game {
+    constructor(gameField) {
+        this._timerID = 0;
+        this._tickInterval = 700;
+        this._isRunning = false;
+        this._isResetable = false;
+        this._generation = 0;
+        this._t_0 = 0;
+        this._field = gameField;
+        this._gameRules = GameRules.normal;
+    }
+    isGameRunning() { return this._isRunning; }
+    isResetable() { return this._isResetable; }
+    reset() {
+        if (!this._isResetable)
+            return false;
+        this.pauseGame();
+        this._generation = 0;
+        this._field.genField();
+        return true;
+    }
+    startGame() {
+        if (!this._isRunning) {
+            this._isRunning = true;
+            this._isResetable = true;
+            var t = this;
+            this._timerID = window.setInterval(t.gameIteration.bind(t), 5);
+        }
+    }
+    pauseGame() {
+        window.clearInterval(this._timerID);
+        this._isRunning = false;
+    }
+    setGameRules(func) { this._gameRules = func; }
+    setInterval(interval) {
+        this._tickInterval = interval;
+        if (this._isRunning) {
+            window.clearInterval(this._timerID);
+            var t = this;
+            this._timerID = window.setInterval(t.gameIteration.bind(t), 5);
+        }
+    }
+    getGameField() { return this._field; }
+    getGArray() { return this._field.field; }
+    getGeneration() { return this._generation.toString(); }
+    gameIteration() {
+        if (performance.now() - this._t_0 < this._tickInterval)
+            return;
+        this._generation++;
+        this._field.field = this.getNextGen();
+        this._field.draw();
+        this._t_0 = performance.now();
+    }
+    getNextGen() {
+        let nextGen = makeGField(this._field.cols, this._field.rows);
+        let neighborCount = this._field.getNeigborCount.bind(this._field);
+        for (let x = 0; x < this._field.cols; x++) {
+            for (let y = 0; y < this._field.rows; y++) {
+                if (this._gameRules(neighborCount(x, y), this._field.getCell(x, y))) {
+                    nextGen[x][y] = 1;
+                }
+            }
+        }
+        return nextGen;
+    }
 }
 //# sourceMappingURL=gof.js.map

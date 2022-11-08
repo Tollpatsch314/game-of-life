@@ -142,7 +142,7 @@ function reset() : void {
 }
 
 function uploadFile() : void {
-	let upld = document.getElementById("uploadFile");
+	//let upld = document.getElementById("uploadFile");
 }
 
 function enableReset() : void {
