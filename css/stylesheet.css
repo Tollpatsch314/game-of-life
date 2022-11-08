@@ -87,27 +87,41 @@ input[type=button]:not(:disabled):active {
 	
   display:grid;
   grid-template-columns:auto auto;
+
 }
 
 .helpinfo {
+
   grid-column-start:1;
   margin-left:5%;
+  
 }
 
 .helpimg {
   grid-column-start:2;
 }
+.helpimg img {
+	width: 100%;
+}
 
 .btn-start {
-	background-color: #2c7c0c !important; width: 100%;}
+	background-color: #2c7c0c !important;
+	 width: 100%;
+	 min-width: 150px;}
 .btn-pause {
-	background-color:orange !important; width: 100%;}
+	background-color:orange !important;
+	 width: 100%;
+	 min-width: 150px;}
 .btn-reset {
-	background-color:crimson !important; width: 100%; margin-left: -20px;}
+	background-color:crimson !important;
+	 width: 100%;
+	 min-width: 150px;
+	  margin-left: -20px;}
 
 #btn-help {
 	float: right;
 	margin: 20px;
+
 
 }
 
@@ -151,4 +165,26 @@ input[type=button]:not(:disabled):active {
 	text-decoration: none;
 	display: block;
   }
-  
+
+.btn-upload {
+	margin: 5px;
+	margin-top: 10px;
+	width: 20%;
+	min-width: 50px;
+	height: 30px;
+	background-color:#474747;
+	border-radius:13px;
+	border:none;
+	display:inline-block;
+	cursor:pointer;
+	color:#fff;
+	font-family:'Courier New',Courier,monospace;
+	font-size:1.6rem;
+	font-weight:bold;
+	padding:12px 23px;
+    text-align:center;
+	justify-content: center;
+	text-decoration:none;
+    outline:none;
+    box-shadow:3px 6px #999;
+}
