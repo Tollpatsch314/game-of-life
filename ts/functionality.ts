@@ -61,7 +61,7 @@ function loadPage() : void {	// Funktion lädt die Seite und den Canvas, sowie w
 
 	// Setzten der Feldgröße (range)
 	(document.getElementById("rngSize") as HTMLInputElement).value = "50";
-	
+
 	// Event-Funktionen
 	if(veryFirstInit) {
 
@@ -170,7 +170,7 @@ function downloadFieldConfig() {
 	let file = new Blob([txt], {type: "text/plain"});
 	let link = document.createElement("a") as any;
 	link.setAttribute("href", URL.createObjectURL(file));
-	link.setAttribute("download", "ABC.txt");
+	link.setAttribute("download", "GOF-Konfiguration.txt");
 	link.click();
 	URL.revokeObjectURL(link.href);
 }

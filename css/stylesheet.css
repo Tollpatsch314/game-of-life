@@ -86,21 +86,21 @@ input[type=button]:not(:disabled):active {
 
 
 #helpinfobox {
-	
   display:grid;
   grid-template-columns:auto auto;
 
 }
 
 .helpinfo {
-
   grid-column-start:1;
-  margin-left:5%;
-  
+  margin-left:3%;
+  margin-right:2%;
 }
 
 .helpimg {
   grid-column-start:2;
+  margin-left:2%;
+  margin-right:3%;
 }
 .helpimg img {
 	width: 100%;

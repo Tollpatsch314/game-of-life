@@ -22,6 +22,8 @@ function changeFieldSize() : void {
 	if(!game.isResetable()) {
 		let rng = document.getElementById("rngSize") as HTMLInputElement;
 		let a_max = parseInt(rng.value);
+		let lbl = document.getElementById("lblSize") as HTMLLabelElement;
+		lbl.innerHTML = rng.value;
 		gameField = new GameField(a_max, a_max, drawField);
 		gameField.draw();
 	}

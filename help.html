@@ -19,6 +19,7 @@
                 Regeln, welche das Spiel definieren. Der Begriff "Spiel" ist in diesen Fall jedoch irreführend, da es keineswegs sich um ein Spiel handelt, welches
                 man mit mehreren, zu zweit und auch nicht alleine spielt. Nein, vielmehr "spielt" es sich "selbst".
             </p>
+            <p>Folgende Punkte bilden die klassische Spielregel:</p>
             <ol>   
                 <li>Eine lebende Zelle mit weniger als zwei Nachbarn stirbt an Einsamkeit.</li>
                 <li>Eine lebende Zelle mit mehr als drei Nachbarn stirbt an Überbevölkerung.</li>
@@ -29,7 +30,7 @@
 
             <h3>Die Bestandteile des Programmess</h3>
             <ul>
-                <li>- Das Spielfeld (standartmäßige Größe von 50 x 50, aber anpassbar))</li>
+                <li>- Das Spielfeld (standartmäßige Größe von 50 x 50, aber anpassbar)</li>
                 <li>- leere Kästchen: eine tote Zelle</li>
                 <li>- schwarzes Kästchen: eine lebende Zelle</li>
             </ul>
@@ -48,58 +49,100 @@
                 Berechnungsverhalten am Rand und Regeln die das allgemeine Spiel betreffen und in Abhängigkeit der Lebendigkeit einer einzelnen Zelle und ihrer unmittelbaren
                 Nachbarn festlegt, ob diese in der nächsten Generation lebendig ist.
             </p>
-            <p>Invertiert: Lebend wird zu tot und tot zu lebend. </p>
-            <p>Randrebeln</p>
-            <p>-Toroid ist ein Donut</p>
-            <p>-um das Feld ist ein ring von lebenden Zellen</p>
-            <p>-um das Feld ist ein ring von toten Zellen</p>
-            <br>
 
+            <p>Diese Regeln beeinflussen das Verhalten aller Zellen:</p>
+            <ul>
+                <li>- klassisch ... die klassischen Regeln</li>
+                <li>- invertiert ... die Antiregel zur Klassischen</li>
+                <li>- Kopierwelt ... sorgt für den "Kopiereffekt", es gilt:
+                    <ul>
+                        <li>- gerade Anzahl an Nachbarn ==> Tod</li>
+                        <li>- ungerade Anzahl an Nachbarn ==> Lebendigkeit</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <p></p>
+            <ul>
+                <li>- donutförmig ... die Ränder sind miteinander "verlinkt"</li>
+                <li>- immer tot ... Der Rand wird immer als tod interpretiert</li>
+                <li>
+                    - immer lebendig ... Der Rand wird immer als lebendig interpretiert (hat den Effekt, dass vom Rand, insofern die
+                    Regeln klassisch sind, Veränderung ausgehen)
+                </li>   
+            </ul>            
+            <br />
+            
             <h3>Der 'Start' Button</h3>
-            <p>Der Start Button lässt die Regeln von Conways Game of Life für das gesamte Feld beginnen. Er ist nicht zu sehen, wenn das Spiel läuft. </p>
-            <br>
+            <p>
+                Der Start Button startet die iterative Generierung neuer Generationen unter den gegebenen Spielregeln.
+            </p>
+            <br />
 
             <h3>Der 'Reset' Button</h3>
-            <p>Der Reset Button leert das Feld. Das heißt alle 'lebenden' Zellen werden durch 'tote' Zellen ersetzt. Das Feld wird komplett Weiß. </p>
-            <br>
+            <p>
+                Der Reset Button leer das Feld und setzt die Generation auf 0.
+            </p>
+            <br />
 
             <h3>Der 'Stopp' Button</h3>
-            <p>Der Stopp Button hält die Zeit an. Damit werden keine weiteren Zellen geboren oder Sterben. Er ist nur zu sehen, wenn das Spiel läuft. </p>
-            <br>
+            <p>
+                Der Stopp Button hält die Zeit an. Damit werden keine weiteren Zellen geboren oder Sterben. Er ist nur zu sehen, wenn das Spiel läuft.
+            </p>
+            <br />
 
-            <h3>Der 'BerechnungsIntervall' Slider</h3>
-            <p>Er bestimmt die Spielgeschwindigkeit. Nach welchem Zeitraum eine nächste Generation auf dem Spielfeld erscheint. </p>
-            <br>
+            <h3>Der 'Berechnungsintervall' Slider</h3>
+            <p>
+                Er bestimmt die Spielgeschwindigkeit, welche den Zeitraum zwischen der Erzeugung zweier Generationen vergeht.
+            </p>
+            <br />
+            
+            <a href="index.html" style="margin-left:10%;">-Zurück-</a>
+
+        </div>
+
+        <div class="helpimg">
+
+            <img src="img/Spielfeld.png" alt="das Spielfeld">
 
             <h3>Der 'Anteil lebendiger Zellen' Slider</h3>
-            <p>Er füllt das Feld zufällig mit lebenden Zellen und zeigt zu wie viel Prozent das Feld mit lebenden Zellen gefüllt ist</p>
-            <br>
+            <p>
+                Er füllt das Feld zufällig mit lebenden Zellen und zeigt an zu wie viel Prozent das Feld mit lebenden Zellen gefüllt ist.
+            </p>
+            <br />
 
             <h3>Der 'Presets' Button</h3>
-            <p>lädt eine bereits vorhandene Konfiguration in das Spielfeld</p>
-            <br>
+            <p>
+                Lädt eine bereits vorhandene Konfiguration in das Spielfeld.
+            </p>
+            <br />
 
             <h3>Der 'Feldgröße' Slider</h3>
-            <p>zeigt die aktuelle Größe des Feldes und lässt diese einstellen. das feld ist immer quadratisch. </p>
-            <br>
+            <p>
+                Zeigt die aktuelle Anzahl an Zellen einer Spalte, bzw. Zeile an und ermöglicht gleichermaßen die Konfiguration dessens. Das Feld ist immer quadratisch.
+            </p>
+            <br />
 
             <h3>Der 'Upload' Button</h3>
-            <p>lässt Dateien in welchen Felder Konfiguration gesetzt sind hochladen und anwenden</p>
-            <br>
+            <p>
+                Lädt Dateien, in welchen Feldekonfiguration gesetzt sind, in das Spielfeld. Ändert auch dementsprechen die Spielregeln und -einstellungen.
+            </p>
+            <br />
 
             <h3>Der 'Download' Button</h3>
-            <p>lässt Dateien in welchen Felder Konfiguration gesetzt sind herunterladen</p>
-            <br>
+            <p>
+                Ermöglicht es eine Felkonfiguration in einer Datei zu speichen, exprotiert hiebei auch die Regeln und die Größe des Feldes.
+            </p>
+            <br />
 
             <h3>Der 'Hilfe' Button</h3>
-            <p>Dieser hat dich hierher geführt</p>
-            <p> <a href="index.html">-Zurück-</a> </p>
-            <br>
-            
+            <p>
+                Dieser hat dich hierher geführt.
+            </p>
+            <br />
+
         </div>
-        <div class="helpimg">
-            <img src="img/Spielfeld.png" alt="das Spielfeld">
-        </div>
+
     </div>
 
 </html>

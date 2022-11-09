@@ -97,6 +97,8 @@ function changeFieldSize() {
     if (!game.isResetable()) {
         let rng = document.getElementById("rngSize");
         let a_max = parseInt(rng.value);
+        let lbl = document.getElementById("lblSize");
+        lbl.innerHTML = rng.value;
         gameField = new GameField(a_max, a_max, drawField);
         gameField.draw();
     }
@@ -274,7 +276,7 @@ function downloadFieldConfig() {
     let file = new Blob([txt], { type: "text/plain" });
     let link = document.createElement("a");
     link.setAttribute("href", URL.createObjectURL(file));
-    link.setAttribute("download", "ABC.txt");
+    link.setAttribute("download", "GOF-Konfiguration.txt");
     link.click();
     URL.revokeObjectURL(link.href);
 }
