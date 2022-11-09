@@ -9,6 +9,10 @@ class GameRules {
 	public static inversed(neighborCount: number, cellLife: boolean) : boolean {     	// Spielregeln für inversed Game of Life
 		return neighborCount != 5 && (neighborCount != 6 || cellLife);
 	}
+
+	public static copyWorld(neighborCount: number/*, cellLife: boolean*/) : boolean {
+		return neighborCount % 2 == 1;
+	}
 }
 
 class Game {

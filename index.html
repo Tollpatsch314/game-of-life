@@ -35,7 +35,9 @@
 				<input name="game-rules" id="gameRule0" type="radio" onclick="toggleGameRule(0);" checked="true" />
 				<label for="gameRule0">Klassisch</label>
 				<input name="game-rules" id="gameRule1" type="radio" onclick="toggleGameRule(1);" />
-				<label for="gameRule1">Invertiert</label>		
+				<label for="gameRule1">Invertiert</label>
+				<input name="game-rules" id="gameRule2" type="radio" onclick="toggleGameRule(2);" />
+				<label for="gameRule2">Kopierwelt</label>	
 			</div>
 
 			<br />
@@ -43,20 +45,18 @@
 
 			<div class="toggle-buttons together">
 				<input name="edge-rules" id="edgeRule0" type="radio" onclick="toggleEdgeRule(0);" checked="true" />
-				<label for="edgeRule0">Oberfl&auml;che eines Toroids</label>
+				<label for="edgeRule0">Donutf&ouml;rmig</label>
 				<input name="edge-rules" id="edgeRule1" type="radio" onclick="toggleEdgeRule(1);" />
-				<label for="edgeRule1">Vom Tod umringt</label>
+				<label for="edgeRule1">immer tot</label>
 				<input name="edge-rules" id="edgeRule2" type="radio" onclick="toggleEdgeRule(2);" />
-				<label for="edgeRule2">Von Leben umringt</label>
-				<input name="edge-rules" id="edgeRule3" type="radio" onclick="toggleEdgeRule(3);" />
-				<label for="edgeRule3">Spiegelnd</label>
+				<label for="edgeRule2">immer lebendig</label>
 			</div>
 
 			<table>
 				<tr><td colspan="3"><h3>Berechnungsintervall</h3></td></tr>
 				<tr>
 					<td><h4>20 ms</h4></td>
-					<td width="80%"><input type="range" id="rngInterval" class="slider" onchange="changeInterval();" min="20" max="1000" step="5" value="700" /></td>
+					<td width="80%"><input type="range" id="rngInterval" class="slider" onmouseup="changeInterval();" min="20" max="1000" step="5" value="700" /></td>
 					<td><h4>1 s</h4></td>
 				</tr>
 				<tr>
@@ -68,7 +68,7 @@
 				<tr><td colspan="3"><h3>Anteil lebendiger Zellen</h3></td></tr>
 				<tr>
 					<td><h4>0%</h4></td>
-					<td width="80%"><input type="range" id="rngDistrib" class="slider" onchange="changeDistrib();" min="0" max="100" step="0.01" value="0" /></td>
+					<td width="80%"><input type="range" id="rngDistrib" class="slider" onmouseup="changeDistrib();" min="0" max="100" step="0.01" value="0" /></td>
 					<td><h4>100%</h4></td>
 				</tr>
 				<tr>
@@ -86,9 +86,9 @@
 				<input type="button" id="btndropdown" class="btn-presets" onclick="" value="Presets" />
 				<div class="presets">
 				
-					<a href="#">Link 1</a>
-   					<a href="#">Link 2</a>
-   					<a href="#">Link 3</a>
+					<a href="#" onclick="loadConfig(GamePresets.GosperGliderGun);">Gosper glider gun</a>
+   					<a href="#" onclick="loadConfig(GamePresets.wasweissich);">Was wei&szlig; ich</a>
+   					<a href="#" onclick="loadConfig(GamePresets.wasweissichpart2);">Was wei&szlig; ich - Teil 2 demn&auml;chst im Kino</a>
 				</div>
 	
 			</div>
@@ -100,10 +100,10 @@
 				<div><canvas id="game-field"></canvas></div>
 			</div>
 			<table>
-				<tr><td colspan="3"><h3>FeldGröße</h3></td></tr>
+				<tr><td colspan="3"><h3>Feldgröße</h3></td></tr>
 					<tr>
 						<td><h4>10</h4></td>
-						<td width="80%"><input type="range" id="rngSize" class="slider" onchange="changeFieldSize();" min="10" max="300" step="1" value="50" /></td>
+						<td width="80%"><input type="range" id="rngSize" class="slider" onmouseup="changeFieldSize();" min="10" max="300" step="1" value="50" /></td>
 						<td><h4>300</h4></td>
 					</tr>
 			</table>

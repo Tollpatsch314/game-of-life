@@ -93,7 +93,7 @@ function initFromText(txt: string) {
 			gameField.setCell(x, y, txtArr[x + 2][y] == '1');
 		}
 	}
-	
+
 	toggleGameRule(parseInt(txtArr[1][0]));
 	toggleEdgeRule(parseInt(txtArr[1][1]));
 
@@ -101,12 +101,12 @@ function initFromText(txt: string) {
 		let n = parseInt(ruleId);
 		for(let i = 0; i < max; i++) {
 			document.getElementById(name + i.toString())?.removeAttribute("checked");
-			if(n == i) document.getElementById(name + i.toString())?.setAttribute("checked", "true");
 		}
+		document.getElementById(name + n.toString())?.setAttribute("checked", "true");
 	}
 
-	setRadio("gameRule", 2, txtArr[1][0]);
-	setRadio("edgeRule", 4, txtArr[1][1]);
+	setRadio("gameRule", 3, txtArr[1][0]);
+	setRadio("edgeRule", 3, txtArr[1][1]);
 
 	game = new Game(gameField);
 	gameField.draw();
@@ -119,13 +119,13 @@ function downloadConf() {
 	switch(game.getGameRuleFunc()) {
 		case GameRules.normal:			txt += "0"; break;
 		case GameRules.inversed:		txt += "1"; break;
+		case GameRules.copyWorld:		txt += "2"; break;
 	}
 
 	switch(gameField.getFieldCalculation()) {
 		case FieldCalc.overlapingEdges:	txt += "0"; break;
 		case FieldCalc.deadEdges:		txt += "1"; break;
 		case FieldCalc.livingEdges:		txt += "2"; break;
-		case FieldCalc.mirrorEdges:		txt += "3"; break;
 	}
 
 	for(let x = 0; x < gameField.cols; x++) {

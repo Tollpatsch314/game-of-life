@@ -10,6 +10,10 @@ h1 {
   text-align:center;
 }
 
+ul {
+	list-style: none;
+}
+
 input[type=button] {
   background-color:#dbd031;
 	border-radius:13px;

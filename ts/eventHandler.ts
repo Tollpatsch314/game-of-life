@@ -3,11 +3,12 @@
 // Ändert die Größe des Spielfeldes
 // - params: (void)
 // - ret: (void)
-function changeFieldSize() {
-	if(!game.isResetable() && gameField.getLivingCellCount() == 0) {
-		let a_max = parseInt((document.getElementById("rngSize") as HTMLInputElement).value);
-		reset();
+function changeFieldSize() : void {
+	if(!game.isResetable()) {
+		let rng = document.getElementById("rngSize") as HTMLInputElement;
+		let a_max = parseInt(rng.value);
 		gameField = new GameField(a_max, a_max, drawField);
+		gameField.draw();
 	}
 }
 
@@ -19,6 +20,13 @@ async function uploadFile(file: File) {
 	initFromText(txt);
 }
 
+// Lädt bevorzug aus "GamePresets" die Presets im definierten File Format
+// - params: (text: string ... text im File-Format)
+// - ret: (void)
+function loadConfig(text: string) : void {
+	initFromText(text);
+}
+
 // Ändert die Spielreglen
 // - params: (ruleId: number ... siehe switch-statement)
 // - ret: (void)
@@ -26,6 +34,7 @@ function toggleGameRule(ruleId: number) : void {
 	switch(ruleId) {
 		case 0: game.setGameRules(GameRules.normal);	                    break;
 		case 1: game.setGameRules(GameRules.inversed);	                    break;
+		case 2: game.setGameRules(GameRules.copyWorld);						break;
 	}
 }
 
@@ -37,7 +46,6 @@ function toggleEdgeRule(ruleId: number) : void {
 		case 0: gameField.setFieldCalculation(FieldCalc.overlapingEdges);	break;
 		case 1: gameField.setFieldCalculation(FieldCalc.deadEdges);			break;
 		case 2: gameField.setFieldCalculation(FieldCalc.livingEdges);		break;
-		case 3: gameField.setFieldCalculation(FieldCalc.mirrorEdges);		break;
 	}
 }
 

@@ -26,14 +26,6 @@ class FieldCalc {
 		let k = (f.field as GField)?.[x]?.[y];										// ?. lässt undefined zu
 		return (k !== undefined) ? k : 1;
 	}
-
-	public static mirrorEdges(f: GameField, x: number, y: number) : number {		// Die Ränder spiegeln die Lebendigkeit (an der x- und y-Achse)
-		let k = (f.field as GField)?.[x]?.[y];
-		if(k !== undefined) return k;
-		x = (x == -1 || x == f.cols) ? Math.abs(x) - 1 : x,
-		y = (y == -1 || y == f.rows) ? Math.abs(y) - 1 : y;
-		return f.field[Math.abs(x) - 1][Math.abs(y) - 1];
-	}
 }
 
 class GameField {
