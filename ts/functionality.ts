@@ -3,6 +3,9 @@
 var game: Game;
 var gameField: GameField;
 
+// Berechnet die Mausposition anhand eines Click-Events auf einen Canvas
+// - params: (canvas: HTMLCanvasElement ... der Canvas; evt: MouseEvent ... das Click-Event)
+// - ret: (object ... besteht aus x: number & y: number)
 function getMousePos(canvas: HTMLCanvasElement, evt: MouseEvent) : {x: number, y: number} {
 	var rect = canvas.getBoundingClientRect();
 	return {
@@ -11,6 +14,9 @@ function getMousePos(canvas: HTMLCanvasElement, evt: MouseEvent) : {x: number, y
 	};
 }
 
+// Gibt die Zellenkoordinate (/Zellindex) zurück (basierend auf einer Canvas-Koordinate)
+// - params: (mousePos: object ... x: number, y: number)
+// - ret: (object: index, besteht aus x: number & y: number)
 function getFieldPos(mousePos: {x: number, y: number}) : {x: number, y: number} {
 	return {
 		x: Math.floor(mousePos.x / (ctx.canvas.width / gameField.cols)),
@@ -18,7 +24,12 @@ function getFieldPos(mousePos: {x: number, y: number}) : {x: number, y: number} 
 	};
 }
 
+// Variablen für das Seitenladen & die übergebenen Events
 var mousedown: boolean, mouseIsSetting: boolean, veryFirstInit: boolean = true;
+
+// Funktion die beim Laden der Seite aufgerufen wird
+// - params: (void)
+// - ret: void
 function loadPage() : void {	// Funktion lädt die Seite und den Canvas, sowie wichtige Variablen
 	canvas = document.getElementById("game-field") as HTMLCanvasElement;
 	ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -39,8 +50,19 @@ function loadPage() : void {	// Funktion lädt die Seite und den Canvas, sowie w
 	// Deaktiviert reset-Button
 	let btn = document.getElementById("btnReset") as HTMLButtonElement;
 	btn.setAttribute("disabled", "true");
+
+	// Radiobuttons auf Standart setzten
+	setRadio("gameRule", 3, "0");
+	setRadio("edgeRule", 3, "0");
+
+	// Setzten des Intervalls zur Berechnung
+	(document.getElementById("rngInterval") as HTMLInputElement).value = "700";
+	changeInterval();
+
+	// Setzten der Feldgröße (range)
+	(document.getElementById("rngSize") as HTMLInputElement).value = "50";
 	
-	// event-Funktionen
+	// Event-Funktionen
 	if(veryFirstInit) {
 
 		function drawEvent(evt: MouseEvent) : void {
@@ -81,9 +103,25 @@ function loadPage() : void {	// Funktion lädt die Seite und den Canvas, sowie w
 	}
 }
 
+// Setzt die Radiobox
+// - params: (name: string ... der Name sollte gleich sein, ohne Iterator; max: number ... Anzahl an Radiobuttons; ruleId: string nummer als String des zu setzten Radiobuttons)
+// - ret: (void)
+function setRadio(name: string, max: number, ruleId: string) {		// Setzt Radioboxen
+	let n = parseInt(ruleId);
+	for(let i = 0; i < max; i++) {
+		(document.getElementById(name + i.toString()) as any).checked = false;
+	}
+	(document.getElementById(name + n.toString()) as any).click();
+}
+
+// Initialisiert das Spiel von einem String im gegebenen Konfigurationsformat (siehe README.md), erzeugt ein neues Feld &
+// ändert Buttons entsprechend
+// - params: (txt: string ... der String)
+// - ret: (void)
 function initFromText(txt: string) {
+
 	let txtArr: string[] = txt.split("\n");
-	let a_max: number = parseInt(txtArr[0]);
+	let a_max: number = parseInt(txtArr[0]);					// Kantenlänge / Anzahl Felder 
 	
 	reset();
 	gameField = new GameField(a_max, a_max, drawField);
@@ -97,14 +135,6 @@ function initFromText(txt: string) {
 	toggleGameRule(parseInt(txtArr[1][0]));
 	toggleEdgeRule(parseInt(txtArr[1][1]));
 
-	function setRadio(name: string, max: number, ruleId: string) {
-		let n = parseInt(ruleId);
-		for(let i = 0; i < max; i++) {
-			document.getElementById(name + i.toString())?.removeAttribute("checked");
-		}
-		document.getElementById(name + n.toString())?.setAttribute("checked", "true");
-	}
-
 	setRadio("gameRule", 3, txtArr[1][0]);
 	setRadio("edgeRule", 3, txtArr[1][1]);
 
@@ -112,8 +142,10 @@ function initFromText(txt: string) {
 	gameField.draw();
 }
 
-function downloadConf() {
-	pauseGame();
+// Ermöglicht das Herunterladen der Feldkonfiguration
+// - params: (void)
+// - ret: (void)
+function downloadFieldConfig() {
 	let txt: string = gameField.cols.toString() + "\n";
 
 	switch(game.getGameRuleFunc()) {
@@ -143,21 +175,27 @@ function downloadConf() {
 	URL.revokeObjectURL(link.href);
 }
 
+// Generiert eine Zufallszahl (Ganzzahl) im übergebenen Bereich
+// - params: (min: number ... Minimus (einschl.); max: number ... Maximum (einschl.))
+// - ret: (number ... die Zufallszahl)
 function rand(min: number, max: number) : number {				// generiert Zufallszahl
 	return Math.round(Math.random() * (max - min + 1) - 0.5) + min;
 }
 
-function randInit(percentageLivingCells: number) : void {		// zufällige Befüllung, bzw. entfernen der Felder
+// Befüllt/leert die Zellen zufällig in einen gegebenen Prozentsatz
+// - params: (percentageLivingCells: number ... Prozentsatz an lebendigen Zellen)
+// - ret: (void)
+function randInit(percentageLivingCells: number) : void {			// zufällige Befüllung, bzw. entfernen der Felder
 	let absoluteCount = Math.round((percentageLivingCells / 100) * gameField.rows * gameField.cols);	// absolute Anzahl an gewünschten Feldern
-	absoluteCount -= gameField.getLivingCellCount();			// zu ändernde Zellen
+	absoluteCount -= gameField.getLivingCellCount();				// zu ändernde Zellen
 
 	let addVal: boolean;
 
-	if(absoluteCount == 0)										// nichts zu ändern
+	if(absoluteCount == 0)											// nichts zu ändern
 		return;
-	else if(absoluteCount > 0)									// es müssen welche hinzugefügt werden
+	else if(absoluteCount > 0)										// es müssen welche hinzugefügt werden
 		addVal = true;
-	else {														// es müssen Felder entfernt werden
+	else {															// es müssen Felder entfernt werden
 		addVal = false;
 		absoluteCount *= -1;
 	}
@@ -171,15 +209,17 @@ function randInit(percentageLivingCells: number) : void {		// zufällige Befüll
 		let x_spot: number = genX(), y_spot: number = genY();		// generiere Koordinaten eines "Spots"
 
 		for(let k = 0; k < rand(2, 5); k++) {
-			let x: number = rand(-2, 2) + x_spot, y: number = rand(-2, 2) + y_spot;
-			x = (x + gameField.cols) % gameField.cols, y = (y + gameField.rows) % gameField.rows;
+			let x: number = rand(-2, 2) + x_spot,
+				y: number = rand(-2, 2) + y_spot;
+			x = (x + gameField.cols) % gameField.cols,
+			y = (y + gameField.rows) % gameField.rows;
 
 			if(gameField.getCell(x, y) ? !addVal : addVal)  {		// leider gibt es kein XOR in JS ):
 				gameField.setCell(x, y, addVal);
 				n++;
 			}
 
-			if(n >= absoluteCount) {
+			if(n >= absoluteCount) {								// Wenn Anzahl an lebendigen Zellen erreicht ist
 				gameField.draw();
 				return;
 			}
@@ -187,18 +227,9 @@ function randInit(percentageLivingCells: number) : void {		// zufällige Befüll
 	}
 }
 
-function reset() : void {
-	game.reset();
-	gameField = game.getGameField();
-	gameField.draw();
-
-	// Deaktivere Reset
-	let btn = document.getElementById("btnReset") as HTMLButtonElement;
-	btn.setAttribute("disabled", "true");
-
-	pauseGame();	// Pause => Start
-}
-
+// Aktiviert den Reset-Button
+// - params: (void)
+// - ret: (vodi)
 function enableReset() : void {
 	if(game.isResetable()) {
 		let btn = document.getElementById("btnReset") as HTMLButtonElement;
@@ -206,6 +237,9 @@ function enableReset() : void {
 	}
 }
 
+// Startet das Spiel, setzt Button entsprechend
+// - params: (void)
+// - ret: (void)
 function startGame() : void {
 	game.startGame();
 	enableReset();
@@ -219,6 +253,9 @@ function startGame() : void {
 	}
 }
 
+// Pausiert das Spiel
+// - params: (void)
+// - ret: (void)
 function pauseGame() : void {
 	game.pauseGame();
 	let btn = document.getElementById("btnStartPause") as HTMLButtonElement;
@@ -232,13 +269,9 @@ function pauseGame() : void {
 	}
 }
 
-function setDistribDspl(percentageLivingCells: number) : void {
-	let rng = document.getElementById("rngDistrib") as HTMLInputElement;
-	rng.value = percentageLivingCells.toString();
-	let lbl = document.getElementById("lblDistrib") as HTMLLabelElement;
-	lbl.innerHTML = rng.value;
-}
-
+// Startconfiguration beim Laden
+// - params: (void)
+// - ret: (void)
 function f_pentomino() : void {
 	gameField.setCell(25, 25, true);
 	gameField.setCell(25, 26, true);

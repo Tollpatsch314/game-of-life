@@ -54,6 +54,12 @@ class GameField {
 }
 var ctx;
 var canvas;
+function setDistribDspl(percentageLivingCells) {
+    let rng = document.getElementById("rngDistrib");
+    rng.value = percentageLivingCells.toString();
+    let lbl = document.getElementById("lblDistrib");
+    lbl.innerHTML = rng.value;
+}
 function drawField(field) {
     let xCan, yCan, width;
     let count = 0;
@@ -79,6 +85,14 @@ function drawField(field) {
     let lblGen = document.getElementById("lbl-generation");
     lblGen.textContent = game.getGeneration();
 }
+function reset() {
+    game.reset();
+    gameField = game.getGameField();
+    gameField.draw();
+    let btn = document.getElementById("btnReset");
+    btn.setAttribute("disabled", "true");
+    pauseGame();
+}
 function changeFieldSize() {
     if (!game.isResetable()) {
         let rng = document.getElementById("rngSize");
@@ -90,6 +104,10 @@ function changeFieldSize() {
 async function uploadFile(file) {
     let txt = await file.text();
     initFromText(txt);
+}
+function downloadConfig() {
+    pauseGame();
+    downloadFieldConfig();
 }
 function loadConfig(text) {
     initFromText(text);
@@ -162,6 +180,11 @@ function loadPage() {
     gameField.draw();
     let btn = document.getElementById("btnReset");
     btn.setAttribute("disabled", "true");
+    setRadio("gameRule", 3, "0");
+    setRadio("edgeRule", 3, "0");
+    document.getElementById("rngInterval").value = "700";
+    changeInterval();
+    document.getElementById("rngSize").value = "50";
     if (veryFirstInit) {
         function drawEvent(evt) {
             var pos = getFieldPos(getMousePos(canvas, evt));
@@ -194,6 +217,13 @@ function loadPage() {
         f_pentomino();
     }
 }
+function setRadio(name, max, ruleId) {
+    let n = parseInt(ruleId);
+    for (let i = 0; i < max; i++) {
+        document.getElementById(name + i.toString()).checked = false;
+    }
+    document.getElementById(name + n.toString()).click();
+}
 function initFromText(txt) {
     let txtArr = txt.split("\n");
     let a_max = parseInt(txtArr[0]);
@@ -206,20 +236,12 @@ function initFromText(txt) {
     }
     toggleGameRule(parseInt(txtArr[1][0]));
     toggleEdgeRule(parseInt(txtArr[1][1]));
-    function setRadio(name, max, ruleId) {
-        let n = parseInt(ruleId);
-        for (let i = 0; i < max; i++) {
-            document.getElementById(name + i.toString())?.removeAttribute("checked");
-        }
-        document.getElementById(name + n.toString())?.setAttribute("checked", "true");
-    }
     setRadio("gameRule", 3, txtArr[1][0]);
     setRadio("edgeRule", 3, txtArr[1][1]);
     game = new Game(gameField);
     gameField.draw();
 }
-function downloadConf() {
-    pauseGame();
+function downloadFieldConfig() {
     let txt = gameField.cols.toString() + "\n";
     switch (game.getGameRuleFunc()) {
         case GameRules.normal:
@@ -278,7 +300,8 @@ function randInit(percentageLivingCells) {
         let x_spot = genX(), y_spot = genY();
         for (let k = 0; k < rand(2, 5); k++) {
             let x = rand(-2, 2) + x_spot, y = rand(-2, 2) + y_spot;
-            x = (x + gameField.cols) % gameField.cols, y = (y + gameField.rows) % gameField.rows;
+            x = (x + gameField.cols) % gameField.cols,
+                y = (y + gameField.rows) % gameField.rows;
             if (gameField.getCell(x, y) ? !addVal : addVal) {
                 gameField.setCell(x, y, addVal);
                 n++;
@@ -289,14 +312,6 @@ function randInit(percentageLivingCells) {
             }
         }
     }
-}
-function reset() {
-    game.reset();
-    gameField = game.getGameField();
-    gameField.draw();
-    let btn = document.getElementById("btnReset");
-    btn.setAttribute("disabled", "true");
-    pauseGame();
 }
 function enableReset() {
     if (game.isResetable()) {
@@ -326,12 +341,6 @@ function pauseGame() {
         btn.onclick = startGame;
         btn.value = "Start";
     }
-}
-function setDistribDspl(percentageLivingCells) {
-    let rng = document.getElementById("rngDistrib");
-    rng.value = percentageLivingCells.toString();
-    let lbl = document.getElementById("lblDistrib");
-    lbl.innerHTML = rng.value;
 }
 function f_pentomino() {
     gameField.setCell(25, 25, true);

@@ -1,5 +1,20 @@
 "use strict";
 
+// Resetet das Spielfeld
+// - params: (void)
+// - ret: (void)
+function reset() : void {
+	game.reset();
+	gameField = game.getGameField();
+	gameField.draw();
+
+	// Deaktivere Resetbutton
+	let btn = document.getElementById("btnReset") as HTMLButtonElement;
+	btn.setAttribute("disabled", "true");
+
+	pauseGame();	// Pause-Button => Start-Button (falls nötig)
+}
+
 // Ändert die Größe des Spielfeldes
 // - params: (void)
 // - ret: (void)
@@ -18,6 +33,14 @@ function changeFieldSize() : void {
 async function uploadFile(file: File) {
 	let txt: string = await file.text();
 	initFromText(txt);
+}
+
+// Zum Herunterladen der Feldkonfiguration
+// - params: (void)
+// - ret: (void)
+function downloadConfig() {
+	pauseGame();
+	downloadFieldConfig();
 }
 
 // Lädt bevorzug aus "GamePresets" die Presets im definierten File Format

@@ -2,16 +2,17 @@
 <html>
 
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />	
+	<meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
+	<meta http-equiv="Pragma" content="no-cache">
 	<link rel="stylesheet" href="css/stylesheet.css" />
 	<link rel="stylesheet" href="css/range-style.css" />
 	<link rel="stylesheet" href="css/radio-style.css" />
-	<script type="text/JavaScript" src="js/gof.js"></script>
+	<script type="text/JavaScript" src="js/gof.js?v=1"></script>
 	<title>Conways Game of Life</title>
 </head>
 
 <body>
-
 	<div class="container">
 
 		<div class="header">
@@ -32,7 +33,7 @@
 			<h2>Spielregeln</h2>
 		
 			<div class="toggle-buttons together">
-				<input name="game-rules" id="gameRule0" type="radio" onclick="toggleGameRule(0);" checked="true" />
+				<input name="game-rules" id="gameRule0" type="radio" onclick="toggleGameRule(0);" checked="" />
 				<label for="gameRule0">Klassisch</label>
 				<input name="game-rules" id="gameRule1" type="radio" onclick="toggleGameRule(1);" />
 				<label for="gameRule1">Invertiert</label>
@@ -44,7 +45,7 @@
 			<h2>Randregeln</h2>	
 
 			<div class="toggle-buttons together">
-				<input name="edge-rules" id="edgeRule0" type="radio" onclick="toggleEdgeRule(0);" checked="true" />
+				<input name="edge-rules" id="edgeRule0" type="radio" onclick="toggleEdgeRule(0);" checked="" />
 				<label for="edgeRule0">Donutf&ouml;rmig</label>
 				<input name="edge-rules" id="edgeRule1" type="radio" onclick="toggleEdgeRule(1);" />
 				<label for="edgeRule1">immer tot</label>
@@ -87,8 +88,8 @@
 				<div class="presets">
 				
 					<a href="#" onclick="loadConfig(GamePresets.GosperGliderGun);">Gosper glider gun</a>
-   					<a href="#" onclick="loadConfig(GamePresets.wasweissich);">Was wei&szlig; ich</a>
-   					<a href="#" onclick="loadConfig(GamePresets.wasweissichpart2);">Was wei&szlig; ich - Teil 2 demn&auml;chst im Kino</a>
+					<a href="#" onclick="loadConfig(GamePresets.wasweissich);">Was wei&szlig; ich</a>
+					<a href="#" onclick="loadConfig(GamePresets.wasweissichpart2);">Was wei&szlig; ich - Teil 2 demn&auml;chst im Kino</a>
 				</div>
 	
 			</div>
@@ -113,7 +114,7 @@
 					<label for="uploadFile" class="btn-upload">Upload</label>
 				</td>
 				<td>
-					<input type="button" id="downloadFile" onclick="downloadConf();" value="Download" />	
+					<input type="button" id="downloadFile" onclick="downloadConfig();" value="Download" />	
 				</td>	
 				</tr>
 			</table>

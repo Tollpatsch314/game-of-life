@@ -3,6 +3,17 @@
 var ctx: CanvasRenderingContext2D;								// Context auf den gezeichnet wird
 var canvas: HTMLCanvasElement;									// Canvas für den Context
 
+// Passt den Slider an den übergebenen Prozentsatz an
+// - params: (percentageLivingCells: number ... Prozentsatz der lebendigen Zellen, der Angezeigt werden soll)
+// - ret: (void)
+function setDistribDspl(percentageLivingCells: number) : void {
+	let rng = document.getElementById("rngDistrib") as HTMLInputElement;
+	rng.value = percentageLivingCells.toString();
+	let lbl = document.getElementById("lblDistrib") as HTMLLabelElement;
+	lbl.innerHTML = rng.value;
+}
+
+
 // Zeichnet das Feld auf ein Canvas, Funktion wird an das Spielfeldobjekt der GameField Klasse übergeben
 // - params: (field: GField ... Das Array was gezeichnet wird)
 // - ret: (void)
