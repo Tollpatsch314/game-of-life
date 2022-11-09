@@ -103,14 +103,14 @@
 				<tr><td colspan="3"><h3>FeldGröße</h3></td></tr>
 					<tr>
 						<td><h4>10</h4></td>
-						<td width="80%"><input type="range" id="fsize" class="slider" onchange="fsizeq();" min="10" max="300" step="1" value="50" /></td>
+						<td width="80%"><input type="range" id="rngSize" class="slider" onchange="changeFieldSize();" min="10" max="300" step="1" value="50" /></td>
 						<td><h4>300</h4></td>
 					</tr>
 			</table>
 			<table>
 				<tr>
-					<td><input type="file" id="uploadfile" onchange="uploadfile(this.files[0]);" hidden>
-					<label for="uploadfile" class="btn-upload">Upload</label>
+					<td><input type="file" id="uploadFile" onchange="uploadFile(this.files[0]);" hidden="true" />
+					<label for="uploadFile" class="btn-upload">Upload</label>
 				</td>
 				<td>
 					<input type="button" id="downloadFile" onclick="downloadConf();" value="Download" />	

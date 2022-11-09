@@ -10,16 +10,20 @@ class FieldCalc {
         return f.field[(x + f.cols) % f.cols][(y + f.rows) % f.rows];
     }
     static deadEdges(f, x, y) {
-        let l = f.field?.[x]?.[y];
-        return (l !== undefined) ? l : 0;
+        let k = f.field?.[x]?.[y];
+        return (k !== undefined) ? k : 0;
     }
     static livingEdges(f, x, y) {
-        let l = f.field?.[x]?.[y];
-        return (l !== undefined) ? l : 1;
+        let k = f.field?.[x]?.[y];
+        return (k !== undefined) ? k : 1;
     }
     static mirrorEdges(f, x, y) {
-        let l = f.field[x][y];
-        return (l !== undefined) ? l : 1;
+        let k = f.field?.[x]?.[y];
+        if (k !== undefined)
+            return k;
+        x = (x == -1 || x == f.cols) ? Math.abs(x) - 1 : x,
+            y = (y == -1 || y == f.rows) ? Math.abs(y) - 1 : y;
+        return f.field[Math.abs(x) - 1][Math.abs(y) - 1];
     }
 }
 class GameField {
@@ -58,6 +62,82 @@ class GameField {
 }
 var ctx;
 var canvas;
+function drawField(field) {
+    let xCan, yCan, width;
+    let count = 0;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let x = 0; x < gameField.cols; x++) {
+        for (let y = 0; y < gameField.rows; y++) {
+            xCan = x * ctx.canvas.width / gameField.cols;
+            yCan = y * ctx.canvas.height / gameField.rows;
+            width = ctx.canvas.width / gameField.cols;
+            if (field[x][y] != 0) {
+                ctx.fillRect(xCan, yCan, width, width);
+                count++;
+            }
+            else {
+                ctx.fillStyle = "rgba(0, 0, 0, 0)";
+                ctx.fillRect(xCan, yCan, width, width);
+                ctx.fillStyle = "rgb(0, 0, 0)";
+                ctx.strokeRect(xCan, yCan, width, width);
+            }
+        }
+    }
+    setDistribDspl(100 * count / (gameField.cols * gameField.rows));
+    let lblGen = document.getElementById("lbl-generation");
+    lblGen.textContent = game.getGeneration();
+}
+function changeFieldSize() {
+    if (!game.isResetable() && gameField.getLivingCellCount() == 0) {
+        let rng = document.getElementById("rngSize");
+        let a_max = parseInt(rng.value);
+        game = new Game(new GameField(a_max, a_max, drawField));
+        gameField = game.getGameField();
+        gameField.draw();
+    }
+}
+async function uploadFile(file) {
+    let txt = await file.text();
+    initFromText(txt);
+}
+function toggleGameRule(ruleId) {
+    switch (ruleId) {
+        case 0:
+            game.setGameRules(GameRules.normal);
+            break;
+        case 1:
+            game.setGameRules(GameRules.inversed);
+            break;
+    }
+}
+function toggleEdgeRule(ruleId) {
+    switch (ruleId) {
+        case 0:
+            gameField.setFieldCalculation(FieldCalc.overlapingEdges);
+            break;
+        case 1:
+            gameField.setFieldCalculation(FieldCalc.deadEdges);
+            break;
+        case 2:
+            gameField.setFieldCalculation(FieldCalc.livingEdges);
+            break;
+        case 3:
+            gameField.setFieldCalculation(FieldCalc.mirrorEdges);
+            break;
+    }
+}
+function changeInterval() {
+    let rng = document.getElementById("rngInterval");
+    game.setInterval(parseInt(rng.value));
+    let lbl = document.getElementById("lblInterval");
+    lbl.innerHTML = rng.value;
+}
+function changeDistrib() {
+    let rng = document.getElementById("rngDistrib");
+    randInit(parseFloat(rng.value));
+    let lbl = document.getElementById("lblDistrib");
+    lbl.innerHTML = rng.value;
+}
 var game;
 var gameField;
 function getMousePos(canvas, evt) {
@@ -183,10 +263,6 @@ function downloadConf() {
     link.click();
     URL.revokeObjectURL(link.href);
 }
-async function uploadfile(file) {
-    let txt = await file.text();
-    initFromText(txt);
-}
 function rand(min, max) {
     return Math.round(Math.random() * (max - min + 1) - 0.5) + min;
 }
@@ -258,75 +334,11 @@ function pauseGame() {
         btn.value = "Start";
     }
 }
-function toggleGameRule(ruleId) {
-    switch (ruleId) {
-        case 0:
-            game.setGameRules(GameRules.normal);
-            break;
-        case 1:
-            game.setGameRules(GameRules.inversed);
-            break;
-    }
-}
-function toggleEdgeRule(ruleId) {
-    switch (ruleId) {
-        case 0:
-            gameField.setFieldCalculation(FieldCalc.overlapingEdges);
-            break;
-        case 1:
-            gameField.setFieldCalculation(FieldCalc.deadEdges);
-            break;
-        case 2:
-            gameField.setFieldCalculation(FieldCalc.livingEdges);
-            break;
-        case 3:
-            gameField.setFieldCalculation(FieldCalc.mirrorEdges);
-            break;
-    }
-}
-function changeInterval() {
-    let rng = document.getElementById("rngInterval");
-    game.setInterval(parseInt(rng.value));
-    let lbl = document.getElementById("lblInterval");
-    lbl.innerHTML = rng.value;
-}
 function setDistribDspl(percentageLivingCells) {
     let rng = document.getElementById("rngDistrib");
     rng.value = percentageLivingCells.toString();
     let lbl = document.getElementById("lblDistrib");
     lbl.innerHTML = rng.value;
-}
-function changeDistrib() {
-    let rng = document.getElementById("rngDistrib");
-    randInit(parseFloat(rng.value));
-    let lbl = document.getElementById("lblDistrib");
-    lbl.innerHTML = rng.value;
-}
-function drawField(field) {
-    let xCan, yCan, height, width;
-    let lblGen = document.getElementById("lbl-generation");
-    lblGen.textContent = game.getGeneration();
-    let count = 0;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (let x = 0; x < gameField.cols; x++) {
-        for (let y = 0; y < gameField.rows; y++) {
-            xCan = x * ctx.canvas.width / gameField.cols;
-            yCan = y * ctx.canvas.height / gameField.rows;
-            width = ctx.canvas.width / gameField.cols;
-            height = ctx.canvas.height / gameField.rows;
-            if (field[x][y] != 0) {
-                ctx.fillRect(xCan, yCan, width, height);
-                count++;
-            }
-            else {
-                ctx.fillStyle = "rgba(0, 0, 0, 0)";
-                ctx.fillRect(xCan, yCan, width, height);
-                ctx.fillStyle = "rgb(0, 0, 0)";
-                ctx.strokeRect(xCan, yCan, width, height);
-            }
-        }
-    }
-    setDistribDspl(100 * count / (gameField.cols * gameField.rows));
 }
 function f_pentomino() {
     gameField.setCell(25, 25, true);

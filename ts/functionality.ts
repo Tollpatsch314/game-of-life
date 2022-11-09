@@ -81,11 +81,6 @@ function loadPage() : void {	// Funktion lädt die Seite und den Canvas, sowie w
 	}
 }
 
-async function uploadfile(file: File) {
-	let txt: string = await file.text();
-	initFromText(txt);
-}
-
 function initFromText(txt: string) {
 	let txtArr: string[] = txt.split("\n");
 	let a_max: number = parseInt(txtArr[0]);
@@ -237,40 +232,9 @@ function pauseGame() : void {
 	}
 }
 
-function toggleGameRule(ruleId: number) : void {
-	switch(ruleId) {
-		case 0: game.setGameRules(GameRules.normal);	break;
-		case 1: game.setGameRules(GameRules.inversed);	break;
-	}
-}
-
-function toggleEdgeRule(ruleId: number) : void {	
-	switch(ruleId) {
-		case 0: gameField.setFieldCalculation(FieldCalc.overlapingEdges);	break;
-		case 1: gameField.setFieldCalculation(FieldCalc.deadEdges);			break;
-		case 2: gameField.setFieldCalculation(FieldCalc.livingEdges);		break;
-		case 3: gameField.setFieldCalculation(FieldCalc.mirrorEdges);		break;
-	}
-}
-
-function changeInterval() : void {
-	let rng = document.getElementById("rngInterval") as HTMLInputElement;
-	game.setInterval(parseInt(rng.value));
-	let lbl = document.getElementById("lblInterval") as HTMLLabelElement;
-	lbl.innerHTML = rng.value;
-
-}
-
 function setDistribDspl(percentageLivingCells: number) : void {
 	let rng = document.getElementById("rngDistrib") as HTMLInputElement;
 	rng.value = percentageLivingCells.toString();
-	let lbl = document.getElementById("lblDistrib") as HTMLLabelElement;
-	lbl.innerHTML = rng.value;
-}
-
-function changeDistrib() : void {
-	let rng = document.getElementById("rngDistrib") as HTMLInputElement;
-	randInit(parseFloat(rng.value));
 	let lbl = document.getElementById("lblDistrib") as HTMLLabelElement;
 	lbl.innerHTML = rng.value;
 }
