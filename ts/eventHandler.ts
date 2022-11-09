@@ -15,16 +15,18 @@ function reset() : void {
 	pauseGame();	// Pause-Button => Start-Button (falls nötig)
 }
 
-// Ändert die Größe des Spielfeldes
+// Ändert die Größe des SpielfeldesgetElementById
 // - params: (void)
 // - ret: (void)
 function changeFieldSize() : void {
-	if(!game.isResetable()) {
+	if(!game.isGameRunning()) {
+		reset();
 		let rng = document.getElementById("rngSize") as HTMLInputElement;
 		let a_max = parseInt(rng.value);
 		let lbl = document.getElementById("lblSize") as HTMLLabelElement;
 		lbl.innerHTML = rng.value;
 		gameField = new GameField(a_max, a_max, drawField);
+		game.setGameField(gameField);
 		gameField.draw();
 	}
 }

@@ -94,12 +94,14 @@ function reset() {
     pauseGame();
 }
 function changeFieldSize() {
-    if (!game.isResetable()) {
+    if (!game.isGameRunning()) {
+        reset();
         let rng = document.getElementById("rngSize");
         let a_max = parseInt(rng.value);
         let lbl = document.getElementById("lblSize");
         lbl.innerHTML = rng.value;
         gameField = new GameField(a_max, a_max, drawField);
+        game.setGameField(gameField);
         gameField.draw();
     }
 }
@@ -405,6 +407,7 @@ class Game {
             this._timerID = window.setInterval(t.gameIteration.bind(t), 5);
         }
     }
+    setGameField(field) { this._field = field; }
     getGameField() { return this._field; }
     getGArray() { return this._field.field; }
     getGameRuleFunc() { return this._gameRules; }

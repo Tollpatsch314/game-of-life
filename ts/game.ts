@@ -92,6 +92,11 @@ class Game {
 		}
 	}
 
+	// Ändert die Referenz des Spielfeldes innehalb des Objektes
+	// - params: (fiels: GameField ... die Referenz)
+	// - ret: (void)
+	public setGameField(field: GameField) : void { this._field = field; }
+
 	// Gibt ein Objekt der Spielffeldklassse zurück (bzw. Pointer)
 	// - params: (void)
 	// - ret: (GameField ... der Pointer)
