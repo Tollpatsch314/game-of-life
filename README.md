@@ -4,7 +4,7 @@
 
 Es muss nichts aufgesetzt werden, alle Funktionalitäten sind über die `index.html` erreichbar. Das Spiel funktioniert unter Chrome, Firefox und Edge.
 Im Internet Explorer läuft es nicht. Die Funktionalität in anderen Browsern wurde nicht getestet, die Wahrscheinlichkeit das es ordnunggerecht läuft ist
-aber sehr hoch. Dieser Teil gilt natürlich für die jetzige Version (Stand 10.11.2022).
+aber sehr hoch. Dieser Teil gilt natürlich für die jeweils neuste Version (Stand 10.11.2022).
 
 ## Definition der Importdateien
 
