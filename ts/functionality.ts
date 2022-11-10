@@ -138,7 +138,9 @@ function initFromText(txt: string) {
 	setRadio("gameRule", 3, txtArr[1][0]);
 	setRadio("edgeRule", 3, txtArr[1][1]);
 
+	let ticks = game.getInterval();
 	game = new Game(gameField);
+	game.setInterval(ticks);
 	gameField.draw();
 }
 

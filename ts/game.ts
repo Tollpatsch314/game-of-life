@@ -79,6 +79,11 @@ class Game {
 	// - ret: (void)
 	public setGameRules(func: Function) : void { this._gameRules = func; }
 
+	// Gibt das gesetzte Intervall in welchen neue Generationen erzeugt werden zurück
+	// - params: (void)
+	// - ret: (number ... das Intervall in ms [20;[)
+	public getInterval() : number { return this._tickInterval; }
+
 	// Ändert das Intervall in welchen neue Generationen erzeugt werden
 	// - params: (interval: number ... Intervall in ms, min 20 ms)
 	// - ret: (void)

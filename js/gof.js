@@ -242,7 +242,9 @@ function initFromText(txt) {
     toggleEdgeRule(parseInt(txtArr[1][1]));
     setRadio("gameRule", 3, txtArr[1][0]);
     setRadio("edgeRule", 3, txtArr[1][1]);
+    let ticks = game.getInterval();
     game = new Game(gameField);
+    game.setInterval(ticks);
     gameField.draw();
 }
 function downloadFieldConfig() {
@@ -399,6 +401,7 @@ class Game {
         this._isRunning = false;
     }
     setGameRules(func) { this._gameRules = func; }
+    getInterval() { return this._tickInterval; }
     setInterval(interval) {
         this._tickInterval = interval;
         if (this._isRunning) {
