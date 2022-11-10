@@ -229,23 +229,28 @@ function setRadio(name, max, ruleId) {
     document.getElementById(name + n.toString()).click();
 }
 function initFromText(txt) {
-    let txtArr = txt.split("\n");
-    let a_max = parseInt(txtArr[0]);
-    reset();
-    gameField = new GameField(a_max, a_max, drawField);
-    for (let x = 0; x < a_max; x++) {
-        for (let y = 0; y < a_max; y++) {
-            gameField.setCell(x, y, txtArr[x + 2][y] == '1');
+    try {
+        let txtArr = txt.split("\n");
+        let a_max = parseInt(txtArr[0]);
+        reset();
+        gameField = new GameField(a_max, a_max, drawField);
+        for (let x = 0; x < a_max; x++) {
+            for (let y = 0; y < a_max; y++) {
+                gameField.setCell(x, y, txtArr[x + 2][y] == '1');
+            }
         }
+        let ticks = game.getInterval();
+        game = new Game(gameField);
+        game.setInterval(ticks);
+        gameField.draw();
+        setRadio("gameRule", 3, txtArr[1][0]);
+        setRadio("edgeRule", 3, txtArr[1][1]);
+        toggleGameRule(parseInt(txtArr[1][0]));
+        toggleEdgeRule(parseInt(txtArr[1][1]));
     }
-    toggleGameRule(parseInt(txtArr[1][0]));
-    toggleEdgeRule(parseInt(txtArr[1][1]));
-    setRadio("gameRule", 3, txtArr[1][0]);
-    setRadio("edgeRule", 3, txtArr[1][1]);
-    let ticks = game.getInterval();
-    game = new Game(gameField);
-    game.setInterval(ticks);
-    gameField.draw();
+    catch (e) {
+        alert("Unbekannter Fehler: \"" + e.message + "\"\nVielleicht ist das Dateiformat ungültig.");
+    }
 }
 function downloadFieldConfig() {
     let txt = gameField.cols.toString() + "\n";
